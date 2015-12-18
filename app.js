@@ -1,9 +1,10 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 
+const DEBUG = true;
+
 class Playlist {
   constructor() {
-    let accessToken = process.argv[2];
-    console.log('init, connecting to spotify...');
+    console.log('init, 🔥  connecting to spotify...');
 
     this.spotifyApi = new SpotifyWebApi({
       clientId : 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
@@ -11,16 +12,14 @@ class Playlist {
       redirectUri : 'http://chillidonut.com/junk/spotifycallback.html'
     });
 
-    if (!accessToken)
-      return this.authenticatePrompt();
-
-    // the real desl
-
-    this.authenticate(accessToken)
-      .then(::this.ensureUser);
-
-    ;
-    // this.ensurePlaylist();
+    this.authenticatePrompt()
+      .then(code => {
+        console.log('\nThanks 🍕');
+        return code;
+      })
+      .then(::this.authenticate)
+      .then(::this.ensureUser)
+      .then(::this.ensurePlaylist);
 
   }
 
@@ -28,34 +27,45 @@ class Playlist {
     return this.spotifyApi.getMe()
       .then((data) => {
         this.user = data.body;
-        console.log('Some information about the authenticated user', data.body);
+
+        if (DEBUG) console.log('>getMe: ', data.body);
+        console.log(`Logged in! Hey ${data.body.display_name} 🚀`);
+
       }, (err) => {
         console.log('ensureUser: Something went wrong!', err);
       });
   }
 
   ensurePlaylist() {
-    return this.spotifyApi.getUserPlaylists(this.user)
+    let username = /^spotify:user:(.+)$/.exec(this.user.uri)[1];
+
+    return this.spotifyApi.getUserPlaylists(username)
       .then((data) => {
-        console.log('Retrieved playlists', data.body);
+        if (DEBUG) console.log('> getUserPlaylists(me):', data.body);
       }, (err) => {
         console.log('ensurePlaylist: Something went wrong!', err);
       });
   }
 
   authenticate(code) {
-    let truncCode = code.substr(0,10) +'...'+ code.substr(-7);
-    console.log('Authenticating with code '+ truncCode);
+    console.log('Authenticating with code '+ trunc(code));
 
     return this.spotifyApi.authorizationCodeGrant(code)
       .then((data) => {
-        console.log('The token expires in ' + data.body['expires_in']);
-        console.log('The access token is ' + data.body['access_token']);
-        console.log('The refresh token is ' + data.body['refresh_token']);
+        let { expires_in, access_token, refresh_token } = data.body
+
+        // console.log('The token expires in ' + data.body['expires_in']);
+        // console.log('The access token is ' + data.body['access_token']);
+        // console.log('The refresh token is ' + data.body['refresh_token']);
+
+        console.log(
+          `Beep beep boop ${trunc(access_token)}`,
+          `01010 ${trunc(refresh_token)}`,
+          `active for ${expires_in / 60} minutes`);
 
         // Set the access token on the API object to use it in later calls
-        this.spotifyApi.setAccessToken(data.body['access_token']);
-        this.spotifyApi.setRefreshToken(data.body['refresh_token']);
+        this.spotifyApi.setAccessToken(access_token);
+        this.spotifyApi.setRefreshToken(refresh_token);
       }, (err) => {
         console.log('authenticate: Something went wrong!', err);
       });
@@ -79,9 +89,38 @@ class Playlist {
     console.log("Visit this URL to authorize:\n")
     console.log(authorizeURL);
     console.log("")
-    console.log("And re-run supplying whatever argument or whatever");
+    console.log("Paste the full code you recieve in here and press Enter:");
+
+    return getInput();
   }
 }
+
+// Utility methods
+
+function trunc(code) {
+  return code.substr(0,10) +'...'+ code.substr(-7);
+}
+
+// getInput adapted from <https://github.com/cymen/node-promise-example>
+var getInput = function() {
+  return new Promise(function(resolve, reject) {
+    var input = '';
+
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+
+    process.stdin.on('data', function(chunk) {
+      input += chunk;
+
+      // If input is Enter
+      if (chunk.indexOf('\n') != -1) {
+        input = input.replace('\n', '');
+        process.stdin.pause();
+        resolve(input);
+      }
+    });
+  });
+};
 
 
 function app() {
