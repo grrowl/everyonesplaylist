@@ -1,10 +1,11 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 
 const DEBUG = true;
+const PLAYLIST_TITLE = `Everybody's playlist`;
 
 class Playlist {
   constructor() {
-    console.log('init, 🔥  connecting to spotify...');
+    console.log('everyone\'s plalyist: 🔥  connecting to spotify...');
 
     this.spotifyApi = new SpotifyWebApi({
       clientId : 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
@@ -23,6 +24,19 @@ class Playlist {
 
   }
 
+  createPlaylist() {
+    return this.spotifyApi.createPlaylist(
+        parseUsername(this.user.uri),
+        PLAYLIST_TITLE,
+        { 'public' : false }
+      )
+      .then(function(data) {
+        console.log(`Created ${PLAYLIST_TITLE} playlist!'`);
+      }, function(err) {
+        console.log('createPlaylist: Something went wrong!', err);
+      });
+  }
+
   ensureUser() {
     return this.spotifyApi.getMe()
       .then((data) => {
@@ -30,18 +44,29 @@ class Playlist {
 
         if (DEBUG) console.log('>getMe: ', data.body);
         console.log(`Logged in! Hey ${data.body.display_name} 🚀`);
-
       }, (err) => {
         console.log('ensureUser: Something went wrong!', err);
       });
   }
 
   ensurePlaylist() {
-    let username = /^spotify:user:(.+)$/.exec(this.user.uri)[1];
-
-    return this.spotifyApi.getUserPlaylists(username)
+    return this.spotifyApi.getUserPlaylists(parseUsername(this.user.uri))
       .then((data) => {
         if (DEBUG) console.log('> getUserPlaylists(me):', data.body);
+
+        let found = false;
+
+        // this doesn't account for paging, so we'll get 20 max (as indicated
+        // by data.body.href)
+        for (let playlist of data.body.items) {
+          if (playlist.title == PLAYLIST_TITLE) {
+            found = true;
+          }
+        }
+
+        if (!found)
+          return ::this.createPlaylist;
+
       }, (err) => {
         console.log('ensurePlaylist: Something went wrong!', err);
       });
@@ -96,6 +121,10 @@ class Playlist {
 }
 
 // Utility methods
+
+function parseUsername(uri) {
+  return /^spotify:user:(.+)$/.exec(uri)[1];
+}
 
 function trunc(code) {
   return code.substr(0,10) +'...'+ code.substr(-7);
