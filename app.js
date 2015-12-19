@@ -3,8 +3,9 @@ import connect from 'connect';
 import http from 'http';
 import uniloc from 'uniloc';
 
-import compression  from 'compression';
-import session  from 'express-session';
+import compression from 'compression';
+import session from 'express-session';
+import serveStatic  from 'serve-static';
 import bodyParser from 'body-parser';
 
 import routes from './src/routes';
@@ -16,19 +17,22 @@ export default function app() {
   let server = connect();
 
   // gzip/deflate outgoing responses
-  server.use(compression())
+  server.use(compression());
+
+  // serve static files
+  server.use(serveStatic('static'));
 
   // store session state server-side
   server.use(session({
     resave: true, // resaves after every access, keeps session from timing out
     saveUninitialized: false,
     secret: 'a very complex and secret secret'
-  }))
+  }));
 
   // parse urlencoded request bodies into req.body
   server.use(bodyParser.urlencoded({
     extended: false
-  }))
+  }));
 
   // respond to all requests
   server.use(function(req, res){

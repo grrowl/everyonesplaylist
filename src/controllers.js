@@ -7,15 +7,19 @@ import { renderToStaticMarkup as render } from 'react-dom';
 
 import fs from 'fs';
 
-function renderDocument(children) {
+// function renderDocument(children) {
   // return '<!DOCTYPE html>'+ render(<Document children={ Index } />);
   // return `<!DOCTYPE html> children;
+// }
+
+function renderView(filename) {
+  return fs.readFileSync(filename, "utf8");
 }
 
 class Controllers {
   static index(req) {
     return {
-      response: require('./index.html'),
+      response: renderView('src/views/index.html'),
       code: 200
     }
   }

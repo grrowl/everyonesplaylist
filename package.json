@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "babel client.js --out-file static/client.js --source-maps inline",
+    "watch": "babel client.js --out-file static/client.js --source-maps inline --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tom mckenzie",
@@ -20,6 +22,7 @@
     "uniloc": "^0.2.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.3.17",
     "babel-core": "^6.3.21",
     "babel-loader": "^6.2.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.3.16",
