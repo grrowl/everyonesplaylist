@@ -1,4 +1,6 @@
 
+import fetch from 'fetch';
+
 (function() {
 
   console.log('hey bro');
