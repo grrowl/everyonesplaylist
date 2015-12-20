@@ -2,9 +2,12 @@
 import connect from 'connect';
 import http from 'http';
 import uniloc from 'uniloc';
+import { default as qs } from 'qs';
+import DB from './src/db';
 
 import compression from 'compression';
 import session from 'express-session';
+import sessionStore from 'nedb-session-store';
 import serveStatic  from 'serve-static';
 import bodyParser from 'body-parser';
 
@@ -19,15 +22,29 @@ export default function app() {
   // gzip/deflate outgoing responses
   server.use(compression());
 
-  // serve static files
-  server.use(serveStatic('static'));
-
   // store session state server-side
   server.use(session({
-    resave: true, // resaves after every access, keeps session from timing out
+    store: new (sessionStore(session))(DB.defaultOptions),
+    resave: false, // resaves after every access, keeps session from timing out
     saveUninitialized: false,
     secret: 'a very complex and secret secret'
   }));
+
+  // Save authorization params to the session
+  server.use(function (req, res, next) {
+    let search = /\?(.+)$/.exec(req.url),
+        params = qs.parse(search && search[1]),
+        { code, state } = params;
+
+    if (code && state) {
+      req.session.auth = { code, state }
+    }
+
+    next();
+  });
+
+  // serve static files
+  server.use(serveStatic('static'));
 
   // parse urlencoded request bodies into req.body
   server.use(bodyParser.urlencoded({

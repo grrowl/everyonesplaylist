@@ -1,9 +1,21 @@
 
-import fetch from 'fetch';
+class API {
+  static getSession() {
+    return fetch('/api/session')
+      .then(result => {
+        console.log('result', result);
+      })
+      .catch(error => {
+        console.log('error', error);
+      });
+  }
+}
 
 (function() {
 
   console.log('hey bro');
+
+  API.getSession();
 
   var code = document.getElementById('code'),
       state = document.getElementById('state');

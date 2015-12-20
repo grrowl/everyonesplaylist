@@ -1,55 +1,66 @@
 
-import React from 'react';
-import { renderToStaticMarkup as render } from 'react-dom';
-
-// import Document from './views/document';
-// import Index from './views/index';
-
-import fs from 'fs';
-
-// function renderDocument(children) {
-  // return '<!DOCTYPE html>'+ render(<Document children={ Index } />);
-  // return `<!DOCTYPE html> children;
-// }
+import Playlist from './playlist';
+import DB from './db';
 
 function renderView(filename) {
   return fs.readFileSync(filename, "utf8");
 }
 
+function render(response, code = 200) {
+  try {
+    response = JSON.stringify(response)
+  } catch (e) {}
+
+  return {
+    response,
+    code
+  };
+}
+
 class Controllers {
   static index(req) {
-    return {
-      response: renderView('src/views/index.html'),
-      code: 200
-    }
+    return render({
+      api: 'hello'
+    })
   }
 
   static api(req) {
-    return {
-      response: 'hai',
-      code: 200
-    }
+    return render({
+      api: 'hello'
+    })
   }
 
   static apiSession(req) {
-    return {
-      response: 'hai',
-      code: 200
+    // check req.session for auth
+    // if none, return auth link
+    // attempt authorize
+    // if fail, reutrn auth link
+
+    let playlist = new Playlist(),
+        unauthorized = false;
+
+    return render(req.session);
+
+    if (req.session && req.session.auth) {
+      // do auth
+      return render(req.session.auth);
     }
+
+    return render({
+      api: 'session not found i guess'
+    })
   }
 
   static apiPlaylist(req) {
-    return {
-      response: 'hai',
-      code: 200
-    }
+    return render({
+      api: 'apiPlaylist'
+    })
   }
 
   static apiPlaylistCreate(req) {
-    return {
-      response: 'hai',
-      code: 200
-    }
+    return render({
+      api: 'apiPlaylistCreate'
+    })
   }
 }
 

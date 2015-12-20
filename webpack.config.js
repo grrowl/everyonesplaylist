@@ -1,4 +1,6 @@
-var path = require('path');
+
+var webpack = require('webpack'),
+    path = require('path');
 
 module.exports = {
   entry: './src/client.js',
@@ -19,11 +21,11 @@ module.exports = {
       },
     ]
   },
-  resolve: {
-    alias: {
-      fetch: 'whatwg-fetch'
-    }
-  },
+  plugins: [
+    new webpack.ProvidePlugin({
+      'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch/fetch'
+    })
+  ],
   node: {
     console: true,
     fs: "empty",
