@@ -8,7 +8,7 @@ class Playlist {
     this.spotifyApi = new SpotifyWebApi({
       clientId : 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
       clientSecret : '563d76469a4f45bd93f73d9e0e845340',
-      redirectUri : 'http://chillidonut.com/junk/spotifycallback.html'
+      redirectUri : 'http://playlist.chillidonut.com/'
     });
   }
 
