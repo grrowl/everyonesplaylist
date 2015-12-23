@@ -39,7 +39,7 @@ export default function app() {
         { code, state } = params;
 
     if (code && state) {
-      req.session.auth = { code, state }
+      req.session.authCallback = { code, state }
     }
 
     next();
@@ -54,23 +54,45 @@ export default function app() {
   }));
 
   // respond to all requests
-  server.use(function(req, res){
+  server.use(function(req, res, next){
     let { lookup, generate } = uniloc(routes),
         { name, options } = lookup(req.url, req.method),
-        response, responseCode;
+        response, responseCode,
+        render = ({ response, code }) => {
+          console.log('rendering', code, response);
+          res.writeHead(responseCode);
+          res.end(response);
+        };
 
+    console.log()
     if (typeof controllers[name] === 'function') {
+      // reply returns { response, code } or a Promise which resolves to such
       let reply = controllers[name].call(this, req);
-      response = reply.response;
-      responseCode = reply.code;
+
+      console.log(name, 'promise?', typeof reply, reply instanceof Promise)
+      if (true || reply instanceof Promise) {
+        reply.then(({ response, code }) => {
+          console.log('# rendering', req.url, name, ' => ', reply);
+          render({ response, code });
+        })
+      } else {
+        let {
+          response = 'Internal Server Error',
+          code = 500
+        } = reply;
+
+        // reply should be of shape { response, code }
+        console.log('- rendering', req.url, code, response);
+        render({ response, code });
+      }
 
     } else {
-      response = 'Not Found';
-      responseCode = 404;
+      render({
+        response: 'Not Found',
+        responseCode: 404
+      })
     }
 
-    res.writeHead(responseCode);
-    res.end(response);
   })
 
   //create node.js http server and listen on port

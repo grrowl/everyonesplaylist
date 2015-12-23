@@ -79,6 +79,12 @@ class Playlist {
         // Set the access token on the API object to use it in later calls
         this.spotifyApi.setAccessToken(access_token);
         this.spotifyApi.setRefreshToken(refresh_token);
+
+        return {
+          expires_in,
+          access_token,
+          refresh_token
+        }
       }, (err) => {
         console.log('authenticate: Something went wrong!', err);
       });
@@ -113,10 +119,6 @@ function trunc(code) {
   return code.substr(0,10) +'...'+ code.substr(-7);
 }
 
-function app() {
-  let cool_sync = new Playlist();
-}
 
-
-export default app;
+export default Playlist;
 

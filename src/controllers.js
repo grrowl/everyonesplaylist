@@ -37,16 +37,27 @@ class Controllers {
     // if fail, reutrn auth link
 
     let playlist = new Playlist(),
-        unauthorized = false;
+        authorized = false;
 
-    if (req.session && req.session.auth) {
+    if (req.session && req.session.authCallback) {
       // do auth
-      return render(req.session.auth);
+      console.log('? getting auth with code', req.session.authCallback.code);
+      let logIn = playlist.authorize(req.session.authCallback.code);
+
+      return logIn.then(auth => {
+        this.session.auth = auth;
+        authorized = true;
+      })
+    }
+    if (playlist) {
+      render({
+        authorizeURL: playlist.getAuthorizeURL()
+      }, 401)
     }
 
     return render({
       api: 'session not found i guess'
-    }, 401)
+    }, 404)
   }
 
   static apiPlaylist(req) {
