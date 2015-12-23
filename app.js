@@ -96,6 +96,8 @@ export default function app() {
   })
 
   //create node.js http server and listen on port
-  http.createServer(server).listen(PORT)
+  http.createServer(server).listen(PORT, () => {
+    console.log('maybe listening on ', PORT);
+  })
 }
 
