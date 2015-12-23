@@ -14,7 +14,7 @@ import bodyParser from 'body-parser';
 import routes from './src/routes';
 import controllers from './src/controllers';
 
-const PORT = 3000;
+const PORT = process.env['port'] || 3000;
 
 export default function app() {
   let server = connect();
