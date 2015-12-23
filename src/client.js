@@ -1,7 +1,9 @@
 
 class API {
   static getSession() {
-    return fetch('/api/session')
+    return fetch('/api/session', {
+        credentials: 'same-origin'
+      })
       .then(response => response.json())
       .catch(error => {
         console.error('getSession error:', error);

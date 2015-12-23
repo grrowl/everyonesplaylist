@@ -1,17 +1,9 @@
 
 import Playlist from './playlist';
 import DB from './db';
-import { default as qs } from 'qs';
 
 function renderView(filename) {
   return fs.readFileSync(filename, "utf8");
-}
-
-function query(req) {
-  let search = /\?(.+)$/.exec(req.url),
-      params = qs.parse(search && search[1]);
-
-  return params;
 }
 
 function render(response, code = 200) {
@@ -46,9 +38,6 @@ class Controllers {
 
     let playlist = new Playlist(),
         authorized = false;
-
-    console.log('get callbackParams', req.session.callbackParams);
-    console.log('query?', query(req));
 
     if (req.session && req.session.callbackParams) {
       // do auth

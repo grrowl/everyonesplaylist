@@ -1,8 +1,8 @@
 
 import connect from 'connect';
 import http from 'http';
+import url from 'url';
 import uniloc from 'uniloc';
-import { default as qs } from 'qs';
 import DB from './src/db';
 
 import compression from 'compression';
@@ -29,18 +29,20 @@ export default function app() {
     store: new store(),
     resave: false, // resaves after every access, keeps session from timing out
     saveUninitialized: false,
+    cookie: {
+      maxAge: 24*60*60*1000
+    },
     secret: 'a very complex and secret secret'
   }));
 
   // Save authorization params to the session
   server.use(function (req, res, next) {
-    let search = /\?(.+)$/.exec(req.url),
-        params = qs.parse(search && search[1]),
-        { code, state } = params;
+    let params = url.parse(req.url, true).query,
+        { code, state } = params,
+        session = req.session;
 
-    if (code && state) {
-      console.log('set callbackParams', code, state)
-      req.session.callbackParams = { code, state }
+    if (params.code && params.state) {
+      session.callbackParams = { code, state }
     }
 
     next();
@@ -56,16 +58,16 @@ export default function app() {
 
   // respond to all requests
   server.use(function(req, res, next){
-    let { lookup, generate } = uniloc(routes),
+    let session = req.session,
+        { lookup, generate } = uniloc(routes),
         { name, options } = lookup(req.url, req.method),
         response, responseCode,
         render = ({ response, code }) => {
           console.log('rendering', req.url, code, response);
           res.writeHead(code);
-          res.end(response);
+          res.end(response, 'utf-8');
         };
 
-    console.log()
     if (typeof controllers[name] === 'function') {
       // reply returns { response, code } or a Promise which resolves to such
       let reply = controllers[name].call(this, req);
@@ -89,7 +91,7 @@ export default function app() {
     } else {
       render({
         response: 'Not Found',
-        responseCode: 404
+        code: 404
       })
     }
 
