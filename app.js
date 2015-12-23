@@ -23,8 +23,10 @@ export default function app() {
   server.use(compression());
 
   // store session state server-side
+  // i'm so sick of reading "session"
+  let store = sessionStore(session);
   server.use(session({
-    store: new (sessionStore(session))(DB.defaultOptions),
+    store: new store(),
     resave: false, // resaves after every access, keeps session from timing out
     saveUninitialized: false,
     secret: 'a very complex and secret secret'

@@ -39,8 +39,6 @@ class Controllers {
     let playlist = new Playlist(),
         unauthorized = false;
 
-    return render(req.session);
-
     if (req.session && req.session.auth) {
       // do auth
       return render(req.session.auth);
@@ -48,7 +46,7 @@ class Controllers {
 
     return render({
       api: 'session not found i guess'
-    })
+    }, 401)
   }
 
   static apiPlaylist(req) {
