@@ -2,11 +2,10 @@
 class API {
   static getSession() {
     return fetch('/api/session')
-      .then(result => {
-        console.log('result', result);
-      })
+      .then(response => response.json())
       .catch(error => {
-        console.log('error', error);
+        console.error('getSession error:', error);
+        return error;
       });
   }
 }
@@ -15,13 +14,21 @@ class API {
 
   console.log('hey bro');
 
-  API.getSession();
+  API.getSession()
+    .then(session => {
+      console.info('session got', session);
+      if (session.authorizeURL) {
+        authorizeLink.href = session.authorizeURL;
+        authorizeLink.innerText = 'Authorize with Spotify';
+      }
+      // code.innerText = JSON.stringify(session);
+    })
+    .catch(result => {
+      console.error('session result', result);
+    })
 
-  var code = document.getElementById('code'),
-      state = document.getElementById('state');
-
-  code.innerText = getQueryVariable('code');
-  state.innerText = new Date(getQueryVariable('state') * 1000);
+  // code.innerText = getQueryVariable('code');
+  // state.innerText = new Date(getQueryVariable('state') * 1000);
 
   function getQueryVariable(variable)
   {

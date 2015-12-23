@@ -14,7 +14,7 @@ import bodyParser from 'body-parser';
 import routes from './src/routes';
 import controllers from './src/controllers';
 
-const PORT = process.env['port'] || 3000;
+const PORT = process.env['PORT'] || 3000;
 
 export default function app() {
   let server = connect();
@@ -39,7 +39,8 @@ export default function app() {
         { code, state } = params;
 
     if (code && state) {
-      req.session.authCallback = { code, state }
+      console.log('set callbackParams', code, state)
+      req.session.callbackParams = { code, state }
     }
 
     next();
@@ -59,8 +60,8 @@ export default function app() {
         { name, options } = lookup(req.url, req.method),
         response, responseCode,
         render = ({ response, code }) => {
-          console.log('rendering', code, response);
-          res.writeHead(responseCode);
+          console.log('rendering', req.url, code, response);
+          res.writeHead(code);
           res.end(response);
         };
 
@@ -70,9 +71,9 @@ export default function app() {
       let reply = controllers[name].call(this, req);
 
       console.log(name, 'promise?', typeof reply, reply instanceof Promise)
-      if (true || reply instanceof Promise) {
+      // if (reply instanceof Promise) {
+      if (reply.then) {
         reply.then(({ response, code }) => {
-          console.log('# rendering', req.url, name, ' => ', reply);
           render({ response, code });
         })
       } else {
@@ -82,7 +83,6 @@ export default function app() {
         } = reply;
 
         // reply should be of shape { response, code }
-        console.log('- rendering', req.url, code, response);
         render({ response, code });
       }
 

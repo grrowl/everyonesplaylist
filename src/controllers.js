@@ -1,9 +1,17 @@
 
 import Playlist from './playlist';
 import DB from './db';
+import { default as qs } from 'qs';
 
 function renderView(filename) {
   return fs.readFileSync(filename, "utf8");
+}
+
+function query(req) {
+  let search = /\?(.+)$/.exec(req.url),
+      params = qs.parse(search && search[1]);
+
+  return params;
 }
 
 function render(response, code = 200) {
@@ -39,25 +47,31 @@ class Controllers {
     let playlist = new Playlist(),
         authorized = false;
 
-    if (req.session && req.session.authCallback) {
+    console.log('get callbackParams', req.session.callbackParams);
+    console.log('query?', query(req));
+
+    if (req.session && req.session.callbackParams) {
       // do auth
-      console.log('? getting auth with code', req.session.authCallback.code);
-      let logIn = playlist.authorize(req.session.authCallback.code);
+      let logIn = playlist.authorize(req.session.callbackParams.code);
 
       return logIn.then(auth => {
         this.session.auth = auth;
-        authorized = true;
+        render({
+          auth
+        }, 201)
       })
-    }
-    if (playlist) {
-      render({
+
+    } else if (req.session.auth) {
+      return render({
+        auth: req.session.auth
+      })
+
+    } else {
+      return render({
         authorizeURL: playlist.getAuthorizeURL()
       }, 401)
     }
 
-    return render({
-      api: 'session not found i guess'
-    }, 404)
   }
 
   static apiPlaylist(req) {
