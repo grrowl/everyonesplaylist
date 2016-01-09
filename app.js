@@ -63,6 +63,12 @@ export default function app() {
         { name, options } = lookup(req.url, req.method),
         response, responseCode,
         render = ({ response, code }) => {
+          if (!response)
+            throw new Error('Render Error: response missing')
+
+          if (!code)
+            throw new Error('Render Error: code missing');
+
           console.log('rendering', req.url, code, response);
           res.writeHead(code);
           res.end(response, 'utf-8');
@@ -72,21 +78,25 @@ export default function app() {
       // reply returns { response, code } or a Promise which resolves to such
       let reply = controllers[name].call(this, req);
 
-      console.log(name, 'promise?', typeof reply, reply instanceof Promise)
-      // if (reply instanceof Promise) {
-      if (reply.then) {
-        reply.then(({ response, code }) => {
+      Promise.resolve(reply)
+        .then(value => {
+          if (!value)
+            throw new Error(`${name} resolved without value`)
+          if (!response || !code)
+            throw new Error(`${name} resolved without ${!response ? 'response' : 'code'}`)
+
+          return value;
+        })
+        .then(({ response, code }) => {
           render({ response, code });
         })
-      } else {
-        let {
-          response = 'Internal Server Error',
-          code = 500
-        } = reply;
-
-        // reply should be of shape { response, code }
-        render({ response, code });
-      }
+        .catch(error => {
+          console.log(`Error in controller ${name}: ${error.stack}`);
+          render({
+            response: JSON.stringify({ error: String(error) }),
+            code: 500
+          });
+        });
 
     } else {
       render({

@@ -22,6 +22,7 @@ class Playlist {
         console.log(`Created ${PLAYLIST_TITLE} playlist!'`);
       }, function(err) {
         console.log('createPlaylist: Something went wrong!', err);
+        throw err; // rethrow error
       });
   }
 
@@ -34,6 +35,7 @@ class Playlist {
         console.log(`Logged in! Hey ${data.body.display_name} 🚀`);
       }, (err) => {
         console.log('ensureUser: Something went wrong!', err);
+        throw err; // rethrow error
       });
   }
 
@@ -57,11 +59,12 @@ class Playlist {
 
       }, (err) => {
         console.log('ensurePlaylist: Something went wrong!', err);
+        throw err; // rethrow error
       });
   }
 
   authorize(code) {
-    console.log('Authenticating with code '+ trunc(code));
+    console.log('Authorizing with code '+ trunc(code));
 
     return this.spotifyApi.authorizationCodeGrant(code)
       .then((data) => {
@@ -86,7 +89,8 @@ class Playlist {
           refresh_token
         }
       }, (err) => {
-        console.log('authenticate: Something went wrong!', err);
+        console.log('authorize: Something went wrong!', err);
+        throw err; // rethrow error
       });
   }
 

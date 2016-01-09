@@ -6,7 +6,7 @@ function renderView(filename) {
   return fs.readFileSync(filename, "utf8");
 }
 
-function render(response, code = 200) {
+function response(response, code = 200) {
   try {
     response = JSON.stringify(response)
   } catch (e) {}
@@ -19,13 +19,13 @@ function render(response, code = 200) {
 
 class Controllers {
   static index(req) {
-    return render({
+    return response({
       api: 'hello'
     })
   }
 
   static api(req) {
-    return render({
+    return response({
       api: 'hello'
     })
   }
@@ -39,38 +39,46 @@ class Controllers {
     let playlist = new Playlist(),
         authorized = false;
 
+    console.log('req.session: ', req.session);
+
     if (req.session && req.session.callbackParams) {
       // do auth
-      let logIn = playlist.authorize(req.session.callbackParams.code);
+      let authorizeSession = playlist.authorize(req.session.callbackParams.code);
 
-      return logIn.then(auth => {
-        this.session.auth = auth;
-        render({
+      return authorizeSession.then(auth => {
+        // save auth for later
+        req.session.auth = auth;
+
+        return response({
           auth
-        }, 201)
-      })
+        }, 201);
+      });
 
     } else if (req.session.auth) {
-      return render({
+      return response({
         auth: req.session.auth
       })
 
     } else {
-      return render({
+      return response({
         authorizeURL: playlist.getAuthorizeURL()
       }, 401)
     }
 
+    response({
+      yeah: 'this'
+    })
+
   }
 
   static apiPlaylist(req) {
-    return render({
+    return response({
       api: 'apiPlaylist'
     })
   }
 
   static apiPlaylistCreate(req) {
-    return render({
+    return response({
       api: 'apiPlaylistCreate'
     })
   }

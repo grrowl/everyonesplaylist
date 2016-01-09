@@ -11,15 +11,31 @@
       font-size: inherit;
       width: 100%;
     }
+    .status.done h3:after {
+      display: inline;
+      content: '... ok!';
+      font-variant: italic;
+    }
+    .status.done .details {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>Spotify 🔥!</h1>
+  <ul class="status">
+    <li id="sessionStatus">
+      <h3>Session</h3>
+      <dl class="details">
+        <dt>State</dt>
+          <dd class="state">Fetching session...</dd>
+        <dt>Authorize?</dt>
+          <dd><a class="authorizeLink">...</a></dd>
+      </dl>
+    </li>
+  </ul>
   <dl>
-    <dt>Authorize?</dt>
-      <dd><a id="authorizeLink" href="#nah">...</a></dd>
-    <dt>State</dt>
-      <dd id="state">...</dd>
+
   </dl>
   <script src="client.js"></script>
 </body>
