@@ -27,10 +27,11 @@ export default function app() {
   let store = sessionStore(session);
   server.use(session({
     store: new store(),
-    resave: false, // resaves after every access, keeps session from timing out
+    resave: false, // don't thrash the cookieStore with no-change append saves
+    rolling: true, // sets cookie on every response, keeps session from timing out
     saveUninitialized: false,
     cookie: {
-      maxAge: 24*60*60*1000
+      maxAge: 1000 * 60 * 60 * 24 * 200 // 200 days
     },
     secret: 'a very complex and secret secret'
   }));
@@ -91,7 +92,9 @@ export default function app() {
           render({ response, code });
         })
         .catch(error => {
-          console.log(`Error in controller ${name}: ${error.stack || error}`);
+          let errorMessage = error.stack || error || 'Unknown error';
+          console.log(`Error in controller ${name}: ${errorMessage}`);
+
           render({
             response: JSON.stringify({ error: String(error) }),
             code: 500

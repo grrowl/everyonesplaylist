@@ -56,10 +56,9 @@ class Controllers {
         if (error.message.match(/^invalid_grant\W/)) {
           // auth code was invalid, erase it from the store for next reload
           delete req.session.callbackParams;
-          throw error;
-        } else {
-          throw error;
         }
+
+        throw error;
       })
 
     } else if (req.session.auth) {
