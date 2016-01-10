@@ -88,9 +88,9 @@ class Playlist {
           access_token,
           refresh_token
         }
-      }, (err) => {
-        console.log('authorize: Something went wrong!', err);
-        throw err; // rethrow error
+      }, error => {
+        console.log('authorize: Something went wrong!', error);
+        throw error; // rethrow error
       });
   }
 

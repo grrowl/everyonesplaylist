@@ -52,7 +52,15 @@ class Controllers {
         return response({
           auth
         }, 201);
-      });
+      }).catch(error => {
+        if (error.message.match(/^invalid_grant\W/)) {
+          // auth code was invalid, erase it from the store for next reload
+          delete req.session.callbackParams;
+          throw error;
+        } else {
+          throw error;
+        }
+      })
 
     } else if (req.session.auth) {
       return response({
@@ -66,7 +74,7 @@ class Controllers {
     }
 
     response({
-      yeah: 'this'
+      error: 'auth fell through'
     })
 
   }

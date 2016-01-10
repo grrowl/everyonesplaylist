@@ -91,7 +91,7 @@ export default function app() {
           render({ response, code });
         })
         .catch(error => {
-          console.log(`Error in controller ${name}: ${error.stack}`);
+          console.log(`Error in controller ${name}: ${error.stack || error}`);
           render({
             response: JSON.stringify({ error: String(error) }),
             code: 500
