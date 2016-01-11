@@ -40,7 +40,7 @@ class API {
         // check for auth object (authenticated)
 
         sessionStatus.classList.add('done');
-        state.innerText = JSON.encode(session.auth);
+        state.innerText = JSON.stringify(session.auth);
 
       } else {
         console.log('session idk lol', session);
