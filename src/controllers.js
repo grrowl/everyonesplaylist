@@ -72,8 +72,9 @@ class Controllers {
       }, 401)
     }
 
-    response({
-      error: 'auth fell through'
+    return response({
+      error: 'auth fell through (this shouldnt happen)',
+      session: req.session
     })
 
   }

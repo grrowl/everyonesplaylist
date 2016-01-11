@@ -2,7 +2,8 @@ require("babel-register");
 
 // enable async stack traces, sometimes
 if (process.env.NODE_ENV !== 'production'){
-  var longjohn = require('longjohn');
+  console.log('installing async stacktrace support')
+  process.env.longjohn = require('longjohn');
 }
 
 // load your app

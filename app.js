@@ -83,8 +83,8 @@ export default function app() {
         .then(value => {
           if (!value)
             throw new Error(`${name} resolved without value`)
-          if (!response || !code)
-            throw new Error(`${name} resolved without ${!response ? 'response' : 'code'}`)
+          if (!value.response || !value.code)
+            throw new Error(`${name} resolved without ${!value.response ? 'response' : 'code'}`)
 
           return value;
         })
