@@ -41,24 +41,21 @@ class Controllers {
 
     console.log('req.session: ', req.session);
 
-    if (req.session && req.session.callbackParams) {
+    if (req.session.callbackParams) {
       // do auth
       let authorizeSession = playlist.authorize(req.session.callbackParams.code);
 
       return authorizeSession.then(auth => {
+        // use the code up
+        delete req.session.callbackParams;
+
         // save auth for later
         req.session.auth = auth;
 
         return response({
+          callbackParamsExpired: true,
           auth
         }, 201);
-      }).catch(error => {
-        if (error.message.match(/^invalid_grant\W/)) {
-          // auth code was invalid, erase it from the store for next reload
-          delete req.session.callbackParams;
-        }
-
-        throw error;
       })
 
     } else if (req.session.auth) {

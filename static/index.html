@@ -7,16 +7,19 @@
     body {
       font-size: 18px;
     }
+    h1 {
+      font-weight: normal;
+    }
     textarea {
       font-size: inherit;
       width: 100%;
     }
-    .status.done h3:after {
+    .status li.done h3:after {
       display: inline;
       content: '... ok!';
       font-variant: italic;
     }
-    .status.done .details {
+    .status li.done .details {
       display: none;
     }
   </style>
@@ -31,6 +34,13 @@
           <dd class="state">Fetching session...</dd>
         <dt>Authorize?</dt>
           <dd><a class="authorizeLink">...</a></dd>
+      </dl>
+    </li>
+    <li id="playlistStatus">
+      <h3>Playlist</h3>
+      <dl class="details">
+        <dt>Exist?</dt>
+          <dd class="exist">unknown</dd>
       </dl>
     </li>
   </ul>
