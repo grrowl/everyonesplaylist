@@ -1,40 +1,31 @@
 
+require("babel-polyfill");
+
+function request(path) {
+  return fetch(`/api/${path}`, {
+      credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(response => {
+      if (response.error)
+        throw Error(response.error);
+      else
+        return response;
+    })
+    .catch(error => {
+      console.log('getSession error:', error);
+      throw error;
+    });
+}
+
+
 class API {
   static getSession() {
-    return fetch('/api/session', {
-        credentials: 'same-origin'
-      })
-      .then(response => response.json())
-      .then(response => {
-        if (response.error)
-          throw Error(response.error);
-        else
-          return response;
-      })
-      .catch(error => {
-        console.log('getSession error:', error);
-        throw error;
-      });
-
-    return sessionPromise;
+    return request('session');
   }
-  static getPlaylist() {
-    return fetch('/api/playlist', {
-        credentials: 'same-origin'
-      })
-      .then(response => response.json())
-      .then(response => {
-        if (response.error)
-          throw Error(response.error);
-        else
-          return response;
-      })
-      .catch(error => {
-        console.log('getPlaylist error:', error);
-        throw error;
-      });
 
-    return sessionPromise;
+  static getPlaylist() {
+    return request('playlist');
   }
 }
 
@@ -65,7 +56,7 @@ class Handlers {
 
         } else {
           console.log('session idk lol', session);
-          state.innerText = 'Error getting session';
+          state.innerText = `Session found (expires in ${session.expires_in / 60} seconds)`;
         }
       })
       .catch(error => {

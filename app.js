@@ -36,19 +36,6 @@ export default function app() {
     secret: 'a very complex and secret secret'
   }));
 
-  // Save authorization params to the session
-  server.use(function (req, res, next) {
-    let params = url.parse(req.url, true).query,
-        { code, state } = params,
-        session = req.session;
-
-    if (params.code && params.state) {
-      session.callbackParams = { code, state }
-    }
-
-    next();
-  });
-
   // serve static files
   server.use(serveStatic('static'));
 
@@ -82,19 +69,20 @@ export default function app() {
       // reply returns { response, code } or a Promise which resolves to such
       let reply = controllers[name].call(this, req);
 
-      Promise.resolve(reply)
-        .then(value => {
+      // this async function will become a promise, which means our handler's
+      // execution will continue (and very shortly, end)
+      (async function () {
+        try {
+          let value = await Promise.resolve(reply)
+
           if (!value)
             throw new Error(`${name} resolved without value`)
           if (!value.response || !value.code)
             throw new Error(`${name} resolved without ${!value.response ? 'response' : 'code'}`)
 
-          return value;
-        })
-        .then(({ response, code, headers }) => {
-          render({ response, code, headers });
-        })
-        .catch(error => {
+          render(value); // { response, code, headers }
+
+        } catch (error) {
           let errorMessage = error.stack || error || 'Unknown error';
           console.log(`Error in controller ${name}: ${errorMessage}`);
 
@@ -102,7 +90,8 @@ export default function app() {
             response: JSON.stringify({ error: String(error) }),
             code: 500
           });
-        });
+        }
+      })();
 
     } else {
       render({

@@ -1,4 +1,6 @@
 
+import url from 'url';
+
 import Playlist from './playlist';
 import DB from './db';
 
@@ -18,9 +20,27 @@ function response(response, code = 200, headers) {
   };
 }
 
+function queryParams(req) {
+  return url.parse(req.url, true).query
+}
+
 class Controllers {
   static authorize(req) {
-    return response({ '🚕': '💨' }, 302, { Location: '/' });
+    let playlist = new Playlist(),
+        { code, state } = queryParams(req)
+
+    // do auth
+    return playlist.authorize(code)
+      .then(auth => {
+        // save auth for later
+        req.session.spotifyAuth = auth
+
+        return auth
+      })
+      .then(auth => {
+        // bounce back to home
+        return response({ '🚕': '💨', ...auth }, 302, { Location: '/' })
+      })
   }
 
   static apiSession(req) {
@@ -30,47 +50,31 @@ class Controllers {
     // if fail, reutrn auth link
 
     let playlist = new Playlist(),
-        authorized = false,
-        sessionCreated = null; // for the reply
+        { spotifyAuth } = req.session,
+        tokenPromise = Promise.reject();
 
-    console.log('req.session: ', req.session);
+    console.log('spotifyAuth: ', spotifyAuth);
 
-    // if the ?callbackParams have been set by the stupid code in server, it's
-    // a stupid way to do it.
-    // ugh and we have no idea if we're overwriting existing session.auth or
-    // if we should be overwriting. the clinet will just keep sending these.
-    // ugh fff
-    if (req.session.callbackParams) {
-      // do auth
-      let authorizeCode = playlist.authorize(req.session.callbackParams.code)
-        .then(auth => {
-          // save auth for later
-          req.session.auth = auth;
-        })
+    if (spotifyAuth && spotifyAuth.code) {
+      // check it works
+      tokenPromise = playlist.authorize(spotifyAuth.code)
 
-      // stop the code from persisting
-      delete req.session.callbackParams;
-
-      return authorizeCode
+    } else if (spotifyAuth && spotifyAuth.access_token) {
+      // just pass it through, should be in the shape:
+      // { expires_in, access_token, refresh_token }
+      tokenPromise = Promise.resolve(spotifyAuth)
     }
 
-    if (req.session.auth) {
-      return response({
-        callbackConsumed,
-        auth: req.session.auth
+    return tokenPromise
+      .then(spotifyAuth => {
+        return response(spotifyAuth)
       })
-
-    } else {
-      return response({
-        authorizeURL: playlist.getAuthorizeURL()
-      }, 401)
-    }
-
-    return response({
-      error: 'auth fell through (this shouldnt happen)',
-      session: req.session
-    }, 500)
-
+      .catch(error => {
+        return response({
+          error,
+          authorizeURL: playlist.getAuthorizeURL()
+        }, 401)
+      })
   }
 
   static apiPlaylist(req) {
