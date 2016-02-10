@@ -6,9 +6,11 @@ const PLAYLIST_TITLE = `Everybody's playlist`;
 class Playlist {
   constructor() {
     this.spotifyApi = new SpotifyWebApi({
-      clientId : 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
-      clientSecret : '563d76469a4f45bd93f73d9e0e845340',
-      redirectUri : 'http://playlist.chillidonut.com/'
+      clientId: 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
+      clientSecret: '563d76469a4f45bd93f73d9e0e845340',
+      redirectUri: process.env.NODE_ENV === 'development'
+        ? `http://localhost:3000/authorize`
+        : `http://playlist.chillidonut.com/authorize`
     });
   }
 

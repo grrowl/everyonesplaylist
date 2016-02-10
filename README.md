@@ -7,9 +7,18 @@ Client: `npm run watch` or `webpack --progress --watch`
 
 ## to do
 
-* `req.callbackParams` will be set as long as there's things in the URL, but
+* client should set `window.location.search = ''` if the api authorizes the
+  callback params; it'll reload the page and do a subsequent api auth request
+  but i don't care ╮ (. ❛ ᴗ ❛.) ╭
+
+* it would be nice to implement redux and a simple router so the ui can
+  actually progress. just on the client. serve index.html for all matching
+  requests (add them to routes.js)
+
+* ~~`req.callbackParams` will be set as long as there's things in the URL, but
   those params will only work for one auth -- we need to redirect the user back
-  to `/` when they're validated
+  to `/` when they're validated~~
+
 
 
 ## application structure

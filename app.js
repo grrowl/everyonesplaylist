@@ -8,10 +8,10 @@ import DB from './src/db';
 import compression from 'compression';
 import session from 'express-session';
 import sessionStore from 'nedb-session-store';
-import serveStatic  from 'serve-static';
+import serveStatic from 'serve-static';
 import bodyParser from 'body-parser';
 
-import routes from './src/routes';
+import { routes, aliases } from './src/routes';
 import controllers from './src/controllers';
 
 const PORT = process.env['PORT'] || 3000;
@@ -60,18 +60,21 @@ export default function app() {
   // respond to all requests
   server.use(function(req, res, next){
     let session = req.session,
-        { lookup, generate } = uniloc(routes),
+        { lookup, generate } = uniloc(routes, aliases),
         { name, options } = lookup(req.url, req.method),
         response, responseCode,
-        render = ({ response, code }) => {
+        render = ({ response, code, headers }) => {
           if (!response)
             throw new Error('Render Error: response missing')
 
           if (!code)
             throw new Error('Render Error: code missing');
 
-          console.log('rendering', req.url, code, response);
-          res.writeHead(code);
+          console.log('rendering', req.url, code, response, headers);
+          res.writeHead(code, {
+            'Content-Type': 'application/json',
+            ...headers
+          });
           res.end(response, 'utf-8');
         };
 
@@ -88,8 +91,8 @@ export default function app() {
 
           return value;
         })
-        .then(({ response, code }) => {
-          render({ response, code });
+        .then(({ response, code, headers }) => {
+          render({ response, code, headers });
         })
         .catch(error => {
           let errorMessage = error.stack || error || 'Unknown error';
