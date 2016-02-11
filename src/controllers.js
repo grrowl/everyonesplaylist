@@ -29,55 +29,78 @@ class Controllers {
     let playlist = new Playlist(),
         { code, state } = queryParams(req)
 
-    // do auth
+    // transform the auth callback's code into a real access_token
     return playlist.authorize(code)
-      .then(auth => {
-        // save auth for later
-        req.session.spotifyAuth = auth
+      .then(token => {
+        // save token for later
+        req.session.spotifyAuth = token
 
-        return auth
+        return token
       })
-      .then(auth => {
+      .then(() => {
         // bounce back to home
-        return response({ '🚕': '💨', ...auth }, 302, { Location: '/' })
+        return response({ '🚕': '💨' }, 302, { Location: '/' })
       })
   }
 
-  static apiSession(req) {
-    // check req.session for auth
-    // if none, return auth link
-    // attempt authorize
-    // if fail, reutrn auth link
+  static async apiSession(req) {
+    // check session for access token
+    // if exist, validate it (getUser) and continue
+    // if not or getUser fails, send authorizeURL
 
-    let playlist = new Playlist(),
-        { spotifyAuth } = req.session,
-        tokenPromise = Promise.reject();
+    let playlist = new Playlist(req.session),
+        { spotifyApi } = playlist;
 
-    console.log('spotifyAuth: ', spotifyAuth);
+    // Attempt validation of token
+    try {
+      let user = (await spotifyApi.getMe()).body;
 
-    if (spotifyAuth && spotifyAuth.code) {
-      // check it works
-      tokenPromise = playlist.authorize(spotifyAuth.code)
+      return response({
+        user
+      });
 
-    } else if (spotifyAuth && spotifyAuth.access_token) {
-      // just pass it through, should be in the shape:
-      // { expires_in, access_token, refresh_token }
-      tokenPromise = Promise.resolve(spotifyAuth)
+    } catch (error) {
+      console.log('spotifyAuth: failed', error);
+
+      return response({
+        error,
+        authorizeURL: playlist.getAuthorizeURL()
+      }, 401)
     }
-
-    return tokenPromise
-      .then(spotifyAuth => {
-        return response(spotifyAuth)
-      })
-      .catch(error => {
-        return response({
-          error,
-          authorizeURL: playlist.getAuthorizeURL()
-        }, 401)
-      })
   }
 
-  static apiPlaylist(req) {
+  static async apiPlaylist(req) {
+    let playlist = new Playlist(req.session),
+        { spotifyApi } = playlist,
+        user = (await spotifyApi.getMe()).body;
+
+    console.log('a user?', user);
+
+    // get the current user
+    // if good,
+
+    return spotifyApi.getUserPlaylists(user.id)
+      .then(data => {
+        console.log('> getUserPlaylists(me):', data.body);
+
+        let found = false;
+
+        // this doesn't account for paging, so we'll get 20 max (as indicated
+        // by data.body.href)
+        for (let playlist of data.body.items) {
+          if (playlist.title == PLAYLIST_TITLE) {
+            found = true;
+          }
+        }
+
+        if (!found)
+          return ::this.createPlaylist;
+
+      }, (err) => {
+        console.log('ensurePlaylist: Something went wrong!', err);
+        throw err; // rethrow error
+      });
+
     return response({
       api: 'apiPlaylist'
     })

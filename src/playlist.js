@@ -1,10 +1,9 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 
-const DEBUG = true;
 const PLAYLIST_TITLE = `Everybody's playlist`;
 
 class Playlist {
-  constructor() {
+  constructor(session) {
     this.spotifyApi = new SpotifyWebApi({
       clientId: 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
       clientSecret: '563d76469a4f45bd93f73d9e0e845340',
@@ -12,6 +11,19 @@ class Playlist {
         ? `http://localhost:3000/authorize`
         : `http://playlist.chillidonut.com/authorize`
     });
+
+    if (session && session.spotifyAuth)
+      this.setSession(session.spotifyAuth);
+  }
+
+  setSession(auth) {
+    // auth should be in the shape:
+    // { expires_in, access_token, refresh_token }
+    if (!auth || !auth.access_token)
+      return false;
+
+    this.spotifyApi.setAccessToken(auth.access_token)
+    this.spotifyApi.setRefreshToken(auth.refresh_token)
   }
 
   createPlaylist() {
@@ -28,41 +40,8 @@ class Playlist {
       });
   }
 
-  ensureUser() {
-    return this.spotifyApi.getMe()
-      .then((data) => {
-        this.user = data.body;
-
-        if (DEBUG) console.log('>getMe: ', data.body);
-        console.log(`Logged in! Hey ${data.body.display_name} 🚀`);
-      }, (err) => {
-        console.log('ensureUser: Something went wrong!', err);
-        throw err; // rethrow error
-      });
-  }
-
-  ensurePlaylist() {
-    return this.spotifyApi.getUserPlaylists(parseUsername(this.user.uri))
-      .then((data) => {
-        if (DEBUG) console.log('> getUserPlaylists(me):', data.body);
-
-        let found = false;
-
-        // this doesn't account for paging, so we'll get 20 max (as indicated
-        // by data.body.href)
-        for (let playlist of data.body.items) {
-          if (playlist.title == PLAYLIST_TITLE) {
-            found = true;
-          }
-        }
-
-        if (!found)
-          return ::this.createPlaylist;
-
-      }, (err) => {
-        console.log('ensurePlaylist: Something went wrong!', err);
-        throw err; // rethrow error
-      });
+  getUser() {
+    throw new Error('depreciated');
   }
 
   authorize(code) {
@@ -71,15 +50,6 @@ class Playlist {
     return this.spotifyApi.authorizationCodeGrant(code)
       .then((data) => {
         let { expires_in, access_token, refresh_token } = data.body
-
-        // console.log('The token expires in ' + data.body['expires_in']);
-        // console.log('The access token is ' + data.body['access_token']);
-        // console.log('The refresh token is ' + data.body['refresh_token']);
-
-        console.log(
-          `Beep beep boop ${trunc(access_token)}`,
-          `01010 ${trunc(refresh_token)}`,
-          `active for ${expires_in / 60} minutes`);
 
         // Set the access token on the API object to use it in later calls
         this.spotifyApi.setAccessToken(access_token);

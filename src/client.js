@@ -8,12 +8,12 @@ function request(path) {
     .then(response => response.json())
     .then(response => {
       if (response.error)
-        throw Error(response.error);
+        throw new Error(response.error);
       else
         return response;
     })
     .catch(error => {
-      console.log('getSession error:', error);
+      console.log('api error:', error);
       throw error;
     });
 }
@@ -44,25 +44,25 @@ class Handlers {
           authorizeLink.innerText = 'Authorize with Spotify';
           state.innerText = 'Waiting for callback';
 
-        } else if (session.callbackParamsExpired) {
-          // redirect to this page without the callbackParams
-          window.location.search = '';
-
-        } else if (session.auth) {
+        } else if (session.user) {
           // check for auth object (authenticated)
 
+          console.log('welcome', session.user);
           sessionStatus.classList.add('done');
-          state.innerText = JSON.stringify(session.auth);
-
-        } else {
-          console.log('session idk lol', session);
-          state.innerText = `Session found (expires in ${session.expires_in / 60} seconds)`;
+          state.innerText = JSON.stringify(`Sup ${session.user.display_name}`);
         }
       })
-      .catch(error => {
-        let state = sessionStatus.querySelector('.state');
+      .catch(response => {
+        let authorizeLink = sessionStatus.querySelector('.authorizeLink'),
+            state = sessionStatus.querySelector('.state'),
+            { error, authorizeURL } = response;
 
-        state.innerText = String(error);
+        state.innerText = String(error.message || error);
+
+        if (authorizeURL) {
+          authorizeLink.href = authorizeURL;
+          authorizeLink.innerText = 'Authorize with Spotify';
+        }
       })
   }
 
