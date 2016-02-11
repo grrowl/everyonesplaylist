@@ -48,7 +48,7 @@ class Playlist {
     console.log('Authorizing with code '+ trunc(code));
 
     return this.spotifyApi.authorizationCodeGrant(code)
-      .then((data) => {
+      .then(data => {
         let { expires_in, access_token, refresh_token } = data.body
 
         // Set the access token on the API object to use it in later calls
@@ -60,10 +60,7 @@ class Playlist {
           access_token,
           refresh_token
         }
-      }, error => {
-        console.log('authorize: Something went wrong!', error);
-        throw error; // rethrow error
-      });
+      })
   }
 
   getAuthorizeURL() {

@@ -4,10 +4,6 @@ import url from 'url';
 import Playlist from './playlist';
 import DB from './db';
 
-function renderView(filename) {
-  return fs.readFileSync(filename, "utf8");
-}
-
 function response(response, code = 200, headers) {
   try {
     response = JSON.stringify(response)
@@ -43,7 +39,7 @@ class Controllers {
       })
   }
 
-  static async apiSession(req) {
+  static async session(req) {
     // check session for access token
     // if exist, validate it (getUser) and continue
     // if not or getUser fails, send authorizeURL
@@ -53,6 +49,8 @@ class Controllers {
 
     // Attempt validation of token
     try {
+      // await spotifyApi.refreshAccessToken();
+
       let user = (await spotifyApi.getMe()).body;
 
       return response({
@@ -62,16 +60,19 @@ class Controllers {
     } catch (error) {
       console.log('spotifyAuth: failed', error);
 
+      // returns a non-error (such as 401) status code since the frontend
+      // is intended to consume the response (and display authURL)
       return response({
         error,
         authorizeURL: playlist.getAuthorizeURL()
-      }, 401)
+      })
     }
   }
 
-  static async apiPlaylist(req) {
-    let playlist = new Playlist(req.session),
-        { spotifyApi } = playlist,
+  static async playlist(req) {
+    // `playlist0` is a terrible shitty hack while we refactor
+    let playlist0 = new Playlist(req.session),
+        { spotifyApi } = playlist0,
         user = (await spotifyApi.getMe()).body;
 
     console.log('a user?', user);
@@ -87,8 +88,8 @@ class Controllers {
 
         // this doesn't account for paging, so we'll get 20 max (as indicated
         // by data.body.href)
-        for (let playlist of data.body.items) {
-          if (playlist.title == PLAYLIST_TITLE) {
+        for (let playlist0 of data.body.items) {
+          if (playlist0.title == PLAYLIST_TITLE) {
             found = true;
           }
         }
@@ -106,7 +107,7 @@ class Controllers {
     })
   }
 
-  static apiPlaylistCreate(req) {
+  static playlistCreate(req) {
     return response({
       api: 'apiPlaylistCreate'
     })

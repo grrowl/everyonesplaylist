@@ -6,12 +6,12 @@ function request(path) {
       credentials: 'same-origin'
     })
     .then(response => response.json())
-    .then(response => {
-      if (response.error)
-        throw new Error(response.error);
-      else
-        return response;
-    })
+    // .then(response => {
+    //   if (response.error)
+    //     throw new Error(response.error);
+    //   else
+    //     return response;
+    // })
     .catch(error => {
       console.log('api error:', error);
       throw error;
@@ -52,12 +52,14 @@ class Handlers {
           state.innerText = JSON.stringify(`Sup ${session.user.display_name}`);
         }
       })
-      .catch(response => {
+      .catch(error => {
         let authorizeLink = sessionStatus.querySelector('.authorizeLink'),
             state = sessionStatus.querySelector('.state'),
-            { error, authorizeURL } = response;
+            // { error, authorizeURL } = response;
+            authorizeURL,
+            error = response;
 
-        state.innerText = String(error.message || error);
+        state.innerText = String((error && error.message) || error);
 
         if (authorizeURL) {
           authorizeLink.href = authorizeURL;

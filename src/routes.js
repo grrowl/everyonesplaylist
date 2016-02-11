@@ -1,14 +1,13 @@
 
 export const routes = {
-  index: 'GET /',
-  authorize: 'GET /authorize',
+  authorize: 'GET /api/authorize',
 
-  apiSession: 'GET /api/session',
+  session: 'GET /api/session',
 
-  apiPlaylist: 'GET /api/playlist',
-  apiPlaylistCreate: 'POST /api/playlist'
+  playlist: 'GET /api/playlist',
+  playlistCreate: 'POST /api/playlist'
 }
 
 export const aliases = {
-  'GET /': 'index'
+  'GET /authorize': 'authorize'
 }
