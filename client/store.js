@@ -1,10 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers';
-import createLogger from 'redux-logger';
-import thunk from 'redux-thunk';
+import promiseMiddleware from 'redux-promise-middleware';
 
 export default function configureStore(initialState) {
-  const middlewares = [thunk];
+  let middlewares = [ promiseMiddleware() ];
 
   if (process.env.NODE_ENV === 'development') {
     const logger = require('redux-logger')();
@@ -14,18 +13,18 @@ export default function configureStore(initialState) {
 
   // Hot reload reducers (requires Webpack HMR to be enabled)
   // TOOD: enable webpack HMR. :|
-  if (module.hot) {
-    module.hot.accept('./reducers', () =>
-      store.replaceReducer(require('./reducers'))
-    );
-  }
+  // if (module.hot) {
+  //   module.hot.accept('./reducers', () =>
+  //     store.replaceReducer(require('./reducers'))
+  //   );
+  // }
 
-  const store = compose(
+  const finalCreateStore = compose(
     applyMiddleware(...middlewares),
     (typeof window === 'object' && window.devToolsExtension
       ? window.devToolsExtension()
-      : f => f)
-  )(createStore)(rootReducer);
+      : f => f),
+    )(createStore);
 
-  return store;
+  return finalCreateStore(rootReducer, initialState);
 }

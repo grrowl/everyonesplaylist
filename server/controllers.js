@@ -47,6 +47,16 @@ class Controllers {
     let playlist = new Playlist(req.session),
         { spotifyApi } = playlist;
 
+    // short-circuit if we have no auth
+    // this is a bit hacky -- fucks the seperation of concerns between
+    // this controller and playlist (which shouldn't have to deal with the
+    // session implementation directly ugh)
+    if (!req.session.spotifyAuth) {
+      return response({
+        authorizeURL: playlist.getAuthorizeURL()
+      })
+    }
+
     // Attempt validation of token
     try {
       // await spotifyApi.refreshAccessToken();

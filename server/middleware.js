@@ -24,8 +24,6 @@ export default function(req, res, next) {
           ...headers
         });
         res.end(response, 'utf-8');
-
-        next();
       };
 
   if (name === undefined) {
