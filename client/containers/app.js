@@ -14,13 +14,6 @@ export default class App extends Component {
     dispatch(SessionActions.fetch());
   }
 
-  aThing(ev) {
-    let { dispatch } = this.props;
-
-    console.log('a thing!');
-    dispatch(SessionActions.fetch());
-  }
-
   renderSession(session) {
     if (session.authorizeURL) {
       return (
@@ -48,15 +41,42 @@ export default class App extends Component {
     )
   }
 
+  renderPlaylist(playlist) {
+    let { session } = this.props;
+
+    if (!session.user) {
+      return (
+        <EmojiStatus>
+          Waiting for session...
+        </EmojiStatus>
+      )
+    }
+
+    if (playlist.length) {
+      return (
+        <EmojiStatus emoji="🔊">
+          We know things about playlists here
+          { JSON.stringify(playlist) }
+        </EmojiStatus>
+      )
+    }
+
+    return (
+      <EmojiStatus emoji="🙄">
+        No playlists found
+      </EmojiStatus>
+    )
+  }
+
   render() {
-    const { state, session, actions } = this.props;
+    const { session, playlist } = this.props;
 
     return (
       <div className="statusContainer">
         { this.renderSession(session) }
-        <marquee><h1>yeah boiiiiii</h1></marquee>
-        <blockquote onClick={ ::this.aThing }>
-          { JSON.stringify(state) }
+        { this.renderPlaylist(playlist) }
+        <blockquote>
+          { JSON.stringify(this.props.state) }
         </blockquote>
       </div>
     );
@@ -68,6 +88,7 @@ App.propTypes = {};
 function mapStateToProps(state) {
   return {
     session: state.session,
+    playlist: state.playlist,
     state: state
   };
 }
