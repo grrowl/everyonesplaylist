@@ -1,0 +1,358 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"query",
+				"querySelector"
+			],
+			[
+				"sess",
+				"sessionPromise"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 93.0,
+		"last_filter": "diff",
+		"selected_items":
+		[
+			[
+				"diff",
+				"Set Syntax: Diff"
+			],
+			[
+				"shell",
+				"Set Syntax: Shell Script (Bash)"
+			],
+			[
+				"babel ",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"babel",
+				"Set Syntax: JavaScript (Babel)"
+			],
+			[
+				"install pack",
+				"Package Control: Install Package"
+			],
+			[
+				"remove pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"remve pack",
+				"Package Control: Remove Package"
+			],
+			[
+				"pack remo",
+				"Package Control: Remove Channel"
+			]
+		],
+		"width": 507.0
+	},
+	"console":
+	{
+		"height": 131.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/tom/Documents/chillidonut/everyonesplaylist"
+	],
+	"file_history":
+	[
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/app.js",
+		"/Users/tom/Library/Application Support/Sublime Text 3/Packages/User/webpack.sublime-build",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/package.json",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/src/client.js",
+		"/Users/tom/Library/Application Support/Sublime Text 3/Packages/User/butt.sublime-build",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/untitled",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/src/playlist.js",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/start.sh",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/.sublime-project",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/.gitignore",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/index.js",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/src/routes.js",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/src/controllers.js",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/static/index.html",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/README.md",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/.git/COMMIT_EDITMSG",
+		"/etc/fstab",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/.foreverignore",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/.foreverIgnore",
+		"/Users/tom/.ssh/config",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/webpack.config.js",
+		"/Users/tom/.zshrc",
+		"/Users/tom/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/tom/dotfiles/setup.sh",
+		"/Users/tom/Documents/chillidonut/everyonesplaylist/c"
+	],
+	"find":
+	{
+		"height": 37.0
+	},
+	"find_in_files":
+	{
+		"height": 95.0,
+		"where_history":
+		[
+			"",
+			"<open files>",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"routes",
+			"route",
+			"project",
+			"route",
+			"rewrite",
+			"import.+route",
+			"route",
+			"routes",
+			" :",
+			"PLAYLIST_TITLE",
+			"callbackParamsExpired",
+			"poly",
+			"sessionStatus",
+			"getSession",
+			".callbackParams",
+			"callbackparams",
+			"session",
+			"json.encode",
+			"preAuthStatus",
+			"getSession error",
+			"throw new error",
+			"render(",
+			"render",
+			"logIn",
+			"div",
+			"session",
+			"render",
+			"err",
+			"session",
+			"promise?",
+			"something went wrong",
+			"promise",
+			"es6",
+			"console",
+			"result",
+			"theme",
+			"# "
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 114.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "Packages/User/webpack.sublime-build",
+	"project": "playlist.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"packa",
+				"package.json"
+			],
+			[
+				"client",
+				"src/client.js"
+			],
+			[
+				"appjs",
+				"app.js"
+			],
+			[
+				"app",
+				"app.js"
+			],
+			[
+				"routes",
+				"src/routes.js"
+			],
+			[
+				"readme",
+				"README.md"
+			],
+			[
+				"playlist",
+				"src/playlist.js"
+			],
+			[
+				"clinetjs",
+				"src/client.js"
+			],
+			[
+				"index",
+				"static/index.html"
+			],
+			[
+				"index.",
+				"index.js"
+			],
+			[
+				"controll",
+				"src/controllers.js"
+			],
+			[
+				"start.sh",
+				"start.sh"
+			],
+			[
+				"indexjs",
+				"index.js"
+			],
+			[
+				"webpack",
+				"webpack.config.js"
+			],
+			[
+				"indexlh",
+				"static/index.html"
+			],
+			[
+				"index.js",
+				"index.js"
+			],
+			[
+				"controller",
+				"src/controllers.js"
+			],
+			[
+				"package",
+				"package.json"
+			],
+			[
+				"index.html",
+				"static/index.html"
+			],
+			[
+				"pack",
+				"package.json"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

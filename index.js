@@ -5,8 +5,8 @@ require("babel-polyfill");
 
 // enable async stack traces, sometimes
 if (process.env.NODE_ENV !== 'production'){
-  console.log('installing async stacktrace support')
   process.env.longjohn = require('longjohn');
+  console.log('👍  async stacktrace supported')
 }
 
 // load your app

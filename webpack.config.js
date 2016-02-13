@@ -3,7 +3,7 @@ var webpack = require('webpack'),
     path = require('path');
 
 module.exports = {
-  entry: './src/client.js',
+  entry: './client/app.js',
   output: {
     filename: './static/client.js'
   },

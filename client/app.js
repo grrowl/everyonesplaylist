@@ -1,3 +1,30 @@
+"use strict";
+
+// client/app
+// bootstraps the app on the client and starts render
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+/**
+ * Both configureStore and Root are required conditionally.
+ * See configureStore.js and Root.js for more details.
+ */
+import { Root } from './containers/Root';
+import createStore from './store';
+
+const store = createStore(/* initial state */);
+
+ReactDOM.render(
+  <Root store={store}/>,
+  document.getElementById('content')
+);
+
+
+console.log('hey bro');
+
+/*
+// yes, this is why git exists, i'm aware
 
 require("babel-polyfill");
 
@@ -18,22 +45,11 @@ function request(path) {
     });
 }
 
-
-class API {
-  static getSession() {
-    return request('session');
-  }
-
-  static getPlaylist() {
-    return request('playlist');
-  }
-}
-
 class Handlers {
   static session() {
     let sessionStatus = document.querySelector('#sessionStatus');
 
-    return API.getSession()
+    return request('session')
       .then(session => {
         let authorizeLink = sessionStatus.querySelector('.authorizeLink'),
             state = sessionStatus.querySelector('.state');
@@ -71,7 +87,7 @@ class Handlers {
   static playlist() {
     let playlistStatus = document.querySelector('#playlistStatus');
 
-    API.getPlaylist()
+    request('playlist')
       .then(playlists => {
         let exist = playlistStatus.querySelector('.exist');
         exist.innerText = JSON.stringify(playlists);
@@ -109,3 +125,5 @@ class Handlers {
   }
 
 })();
+
+*/

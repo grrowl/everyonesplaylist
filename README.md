@@ -20,6 +20,10 @@ Client: `npm run watch` or `webpack --progress --watch`
   to `/` when they're validated~~
 
 
+### dumb-level priority
+
+* `client/store.js` supports hot-reloading. add support for starting the HMR
+  server (in app.js, when dev)
 
 ## application structure
 
@@ -30,3 +34,9 @@ Client: `npm run watch` or `webpack --progress --watch`
 - controllers.js defines the controllers. MUST respond with something that
   resolves to a `{ response, code }`-shaped object (either object itself or a
   promise which resolves to the value)
+
+
+## credits
+
+We've adapted much of the bootstrapping code from the wonderful
+simple-redux-boilerplate repo.
