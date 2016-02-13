@@ -4,7 +4,7 @@ export default function clientDocument(props) {
   return (
     <html>
     <head>
-      <title>HEYYYY</title>
+      <title>Spotify (umbrella)</title>
       <link rel="stylesheet" src="style.css" />
     </head>
     <body>
@@ -15,6 +15,8 @@ export default function clientDocument(props) {
           __html: props.content || "🔥 something went wrong"
         }
       } />
+
+      <script src="client.js"></script>
     </body>
     </html>
   );

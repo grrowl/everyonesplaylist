@@ -1,5 +1,3 @@
-"use strict";
-
 // client/app
 // bootstraps the app on the client and starts render
 
@@ -10,13 +8,13 @@ import ReactDOM from 'react-dom';
  * Both configureStore and Root are required conditionally.
  * See configureStore.js and Root.js for more details.
  */
-import { Root } from './containers/Root';
+import Root from './containers/Root';
 import createStore from './store';
 
 const store = createStore(/* initial state */);
 
 ReactDOM.render(
-  <Root store={store}/>,
+  <Root store={ store }/>,
   document.getElementById('content')
 );
 
