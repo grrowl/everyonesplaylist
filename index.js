@@ -2,6 +2,7 @@ require("babel-register")({
   presets: ['es2015', 'stage-0']
 });
 require("babel-polyfill");
+require("css-modules-require-hook");
 
 // enable async stack traces, sometimes
 if (process.env.NODE_ENV !== 'production'){

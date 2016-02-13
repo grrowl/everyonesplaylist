@@ -15,6 +15,7 @@
     "body-parser": "^1.14.2",
     "compression": "^1.6.0",
     "connect": "^3.4.0",
+    "css-modules-require-hook": "^2.1.0",
     "express-session": "^1.12.1",
     "nedb": "^1.5.0",
     "nedb-session-store": "^1.1.1",
@@ -41,11 +42,13 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.3.13",
     "babel-register": "^6.3.13",
+    "css-loader": "^0.23.1",
     "exports-loader": "^0.6.2",
     "imports-loader": "^0.6.5",
     "json-loader": "^0.5.4",
     "longjohn": "^0.2.11",
     "redux-logger": "^2.5.2",
+    "style-loader": "^0.13.0",
     "webpack": "^1.12.9"
   }
 }
