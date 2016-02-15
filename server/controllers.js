@@ -122,7 +122,6 @@ class Controllers {
         throw new Error('Unknown experiment')
     }
 
-    ;
     console.log(`experiment ${options.name}: ${JSON.stringify(experiment.debug)}`)
 
     return response({
@@ -130,52 +129,6 @@ class Controllers {
       active: experiment.active,
       result: experiment.result,
       ...(await experiment.run())
-    })
-  }
-
-// --- old code
-
-  static async playlist(req) {
-    // `playlist0` is a terrible shitty hack while we refactor
-    let playlist0 = new Playlist(req.session),
-        { spotifyApi } = playlist0,
-        user = (await spotifyApi.getMe()).body;
-
-    console.log('a user?', user);
-
-    // get the current user
-    // if good,
-
-    return spotifyApi.getUserPlaylists(user.id)
-      .then(data => {
-        console.log('> getUserPlaylists(me):', data.body);
-
-        let found = false;
-
-        // this doesn't account for paging, so we'll get 20 max (as indicated
-        // by data.body.href)
-        for (let playlist0 of data.body.items) {
-          if (playlist0.title == PLAYLIST_TITLE) {
-            found = true;
-          }
-        }
-
-        if (!found)
-          return ::this.createPlaylist;
-
-      }, (err) => {
-        console.log('ensurePlaylist: Something went wrong!', err);
-        throw err; // rethrow error
-      });
-
-    return response({
-      api: 'apiPlaylist'
-    })
-  }
-
-  static playlistCreate(req) {
-    return response({
-      api: 'apiPlaylistCreate'
     })
   }
 }

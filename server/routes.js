@@ -4,10 +4,7 @@ export const routes = {
 
   session: 'GET /api/session',
 
-  experiment: 'GET /api/experiment/:name',
-
-  playlist: 'GET /api/playlist',
-  playlistCreate: 'POST /api/playlist'
+  experiment: 'GET /api/experiment/:name'
 }
 
 export const aliases = {

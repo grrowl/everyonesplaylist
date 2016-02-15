@@ -55,7 +55,7 @@ export default class App extends Component {
 
     if (experiment.pending) {
       return (
-        <EmojiStatus emoji="💤">
+        <EmojiStatus emoji="💬">
           { name } checking…
         </EmojiStatus>
       );
@@ -76,40 +76,12 @@ export default class App extends Component {
     )
   }
 
-  renderPlaylist(playlist) {
-    let { session } = this.props;
-
-    if (!session.user) {
-      return (
-        <EmojiStatus>
-          Waiting for session...
-        </EmojiStatus>
-      )
-    }
-
-    if (playlist.length) {
-      return (
-        <EmojiStatus emoji="🔊">
-          We know things about playlists here
-          { JSON.stringify(playlist) }
-        </EmojiStatus>
-      )
-    }
-
-    return (
-      <EmojiStatus emoji="🙄">
-        No playlists found
-      </EmojiStatus>
-    )
-  }
-
   render() {
-    const { session, playlist } = this.props;
+    const { session } = this.props;
 
     return (
       <div className="statusContainer">
         { this.renderSession(session) }
-        { /*this.renderPlaylist(playlist)*/ }
         { this.renderExperiment('matchmaker') }
         <blockquote>
           { JSON.stringify(this.props.state) }
@@ -124,7 +96,6 @@ App.propTypes = {};
 function mapStateToProps(state) {
   return {
     session: state.session,
-    playlist: state.playlist,
     experiments: state.experiments,
     state: state
   };
