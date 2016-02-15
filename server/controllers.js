@@ -126,6 +126,7 @@ class Controllers {
     console.log(`experiment ${options.name}: ${JSON.stringify(experiment.debug)}`)
 
     return response({
+      name: options.name,
       active: experiment.active,
       result: experiment.result,
       ...(await experiment.run())

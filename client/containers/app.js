@@ -42,13 +42,29 @@ export default class App extends Component {
   }
 
   renderExperiment(name) {
-    let { experiments } = this.props,
+    let { experiments = {} } = this.props,
         experiment = experiments[name];
 
-    if (experiment) {
+    if (!experiment) {
       return (
         <EmojiStatus emoji="💬">
           { name } waiting…
+        </EmojiStatus>
+      );
+    }
+
+    if (experiment.pending) {
+      return (
+        <EmojiStatus emoji="💤">
+          { name } checking…
+        </EmojiStatus>
+      );
+    }
+
+    if (!experiment.active) {
+      return (
+        <EmojiStatus emoji="💤">
+          { name } not active.
         </EmojiStatus>
       );
     }
@@ -93,7 +109,8 @@ export default class App extends Component {
     return (
       <div className="statusContainer">
         { this.renderSession(session) }
-        { this.renderPlaylist(playlist) }
+        { /*this.renderPlaylist(playlist)*/ }
+        { this.renderExperiment('matchmaker') }
         <blockquote>
           { JSON.stringify(this.props.state) }
         </blockquote>
@@ -108,6 +125,7 @@ function mapStateToProps(state) {
   return {
     session: state.session,
     playlist: state.playlist,
+    experiments: state.experiments,
     state: state
   };
 }

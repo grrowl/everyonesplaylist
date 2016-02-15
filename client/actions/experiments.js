@@ -16,9 +16,11 @@ export const actionTypes = {
 export function fetch(name) {
   return {
     type: actionTypes.FETCH_EXPERIMENT,
-    name,
     payload: {
-      promise: apiRequest(`experiment/${name}`)
+      promise: apiRequest(`experiment/${name}`),
+      data: {
+        name
+      }
     }
   }
 }
