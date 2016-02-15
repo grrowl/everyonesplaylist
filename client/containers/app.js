@@ -4,7 +4,7 @@ import { connect, dispatch } from 'react-redux';
 
 import * as SessionActions from '../actions/session';
 
-import EmojiStatus from '../components/emojistatus';
+import EmojiStatus from '../components/emojiStatus';
 
 export default class App extends Component {
   componentDidMount() {
@@ -37,6 +37,25 @@ export default class App extends Component {
     return (
       <EmojiStatus emoji="💀">
         Unknown session state
+      </EmojiStatus>
+    )
+  }
+
+  renderExperiment(name) {
+    let { experiments } = this.props,
+        experiment = experiments[name];
+
+    if (experiment) {
+      return (
+        <EmojiStatus emoji="💬">
+          { name } waiting…
+        </EmojiStatus>
+      );
+    }
+
+    return (
+      <EmojiStatus emoji="💘">
+        { experiment.result }
       </EmojiStatus>
     )
   }

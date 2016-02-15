@@ -1,8 +1,13 @@
 
 import url from 'url';
 
+// <https://github.com/thelinmichael/spotify-web-api-node>
+import SpotifyWebApi from 'spotify-web-api-node';
+
 import Playlist from './playlist';
 import DB from './db';
+
+import { MatchMaker } from './experiments';
 
 function response(response, code = 200, headers) {
   try {
@@ -18,6 +23,31 @@ function response(response, code = 200, headers) {
 
 function queryParams(req) {
   return url.parse(req.url, true).query
+}
+
+// Set up api accessor with the session's token
+function authedApi(req) {
+  let { session } = req,
+      auth = (session ? session.spotifyAuth : null),
+      spotifyApi = new SpotifyWebApi({
+        clientId: 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
+        clientSecret: '563d76469a4f45bd93f73d9e0e845340',
+        redirectUri: process.env.NODE_ENV === 'development'
+          ? `http://localhost:3000/authorize`
+          : `http://playlist.chillidonut.com/authorize`
+      });
+
+
+  if (!auth.access_token) {
+    throw new Error("No auth")
+  }
+
+  // auth should be in the shape:
+  // { expires_in, access_token, refresh_token }
+  spotifyApi.setAccessToken(auth.access_token)
+  spotifyApi.setRefreshToken(auth.refresh_token)
+
+  return spotifyApi;
 }
 
 class Controllers {
@@ -78,6 +108,31 @@ class Controllers {
       })
     }
   }
+
+  static async experiment(req, options) {
+    let api = authedApi(req),
+        experiment;
+
+    switch (options.name) {
+      case 'matchmaker':
+        experiment = new MatchMaker(api);
+        break;
+
+      default:
+        throw new Error('Unknown experiment')
+    }
+
+    ;
+    console.log(`experiment ${options.name}: ${JSON.stringify(experiment.debug)}`)
+
+    return response({
+      active: experiment.active,
+      result: experiment.result,
+      ...(await experiment.run())
+    })
+  }
+
+// --- old code
 
   static async playlist(req) {
     // `playlist0` is a terrible shitty hack while we refactor

@@ -1,4 +1,6 @@
 
+import "babel-polyfill";
+
 import connect from 'connect';
 import http from 'http';
 

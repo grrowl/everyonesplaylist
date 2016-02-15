@@ -40,7 +40,7 @@ export default function(req, res, next) {
         throw new Error('Controller not a function');
 
       // reply returns { response, code } or a Promise which resolves to such
-      let value = await Promise.resolve(controllers[name].call(this, req))
+      let value = await Promise.resolve(controllers[name].call(this, req, options))
 
       if (!value)
         throw new Error(`${name} resolved without value`)

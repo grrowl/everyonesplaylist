@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --progress",
-    "watch": "webpack --progress --watch",
+    "dev-debug": "NODE_ENV=development nodemon --exec node --debug index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "run": "NODE_ENV=production node index.js",
+    "client": "webpack --progress",
+    "client-dev": "webpack --progress --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tom mckenzie",
