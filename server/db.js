@@ -7,5 +7,6 @@ let defaultConfig = {
 
 export default {
   defaultConfig: defaultConfig,
-  sessions: new Datastore(defaultConfig)
+  sessions: new Datastore(defaultConfig),
+  playlists: new Datastore(defaultConfig)
 };

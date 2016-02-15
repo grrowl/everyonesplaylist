@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-debug": "NODE_ENV=development nodemon --exec node --debug index.js",
-    "dev": "NODE_ENV=development nodemon index.js",
+    "dev-debug": "NODE_ENV=development nodemon --ignore node_modules --exec node --debug index.js",
+    "dev": "NODE_ENV=development nodemon --ignore node_modules index.js",
     "run": "NODE_ENV=production node index.js",
     "client": "webpack --progress",
     "client-dev": "webpack --progress --watch",

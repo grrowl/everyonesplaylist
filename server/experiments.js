@@ -9,10 +9,19 @@ class Experiment {
     this.debug = {}
     this.active = true
     this.result = "Unknown result"
+
+    // just while we don't have proper cron support
+    this.check();
   }
 
+  // run the experiment. called on user visit
   async run() {
     throw new Error("Bad experiment");
+  }
+
+  // periodically update the database
+  async check() {
+    return false;
   }
 }
 
@@ -29,33 +38,33 @@ export class MatchMaker extends Experiment {
     let { api, options } = this,
         user = (await api.getMe()).body,
         playlists = (await api.getUserPlaylists(user.id)).body,
-        // playlists,
         playlist,
         playlistExisted = true;
 
-    for (playlist of playlists.items) {
-      if (playlist.name == options.name) {
+    for (let thisPlaylist of playlists.items) {
+      if (thisPlaylist.name == options.name) {
+        playlist = thisPlaylist;
         break;
       }
     }
 
     if (!playlist) {
       playlist = await api.createPlaylist(user.id, options.name, { public: false });
-      playlistExisted = false;
+
+      return {
+        playlist,
+        result: "Playlist created"
+      }
     }
 
     return {
       playlist,
-      result: (
-        playlistExisted
-        ? `Playlist active ${options.name}: ${playlist.tracks.total} tracks`
-        : "Playlist created")
+      result: `Playlist active ${options.name}: ${playlist.tracks.total} tracks`
     }
-
   }
 
-  async doesPlaylistExist() {
-    let playlists = await this.api.getUserPlaylists()
+  async check() {
+
   }
 }
 

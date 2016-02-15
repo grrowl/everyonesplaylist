@@ -4,7 +4,6 @@ import url from 'url';
 // <https://github.com/thelinmichael/spotify-web-api-node>
 import SpotifyWebApi from 'spotify-web-api-node';
 
-import Playlist from './playlist';
 import DB from './db';
 
 import { MatchMaker } from './experiments';
@@ -26,8 +25,9 @@ function queryParams(req) {
 }
 
 // Set up api accessor with the session's token
+// @param (optional): req, the request. if omitted will return unauthed api
 function authedApi(req) {
-  let { session } = req,
+  let session = req && req.session,
       auth = (session ? session.spotifyAuth : null),
       spotifyApi = new SpotifyWebApi({
         clientId: 'a3fef0a1ab9e4bcb911b8c7d0df8b8c7',
@@ -38,73 +38,84 @@ function authedApi(req) {
       });
 
 
-  if (!auth.access_token) {
-    throw new Error("No auth")
+  // throw if req was supplied but there is no token saved
+  if (!auth) {
+    if (req)
+      throw new Error("No auth")
+    else
+      return spotifyApi;
   }
 
   // auth should be in the shape:
-  // { expires_in, access_token, refresh_token }
-  spotifyApi.setAccessToken(auth.access_token)
-  spotifyApi.setRefreshToken(auth.refresh_token)
+  // { expiresIn, accessToken, refreshToken }
+  spotifyApi.setAccessToken(auth.accessToken)
+  spotifyApi.setRefreshToken(auth.refreshToken)
 
   return spotifyApi;
 }
 
 class Controllers {
-  static authorize(req) {
-    let playlist = new Playlist(),
-        { code, state } = queryParams(req)
+  static async authorize(req) {
+    // fire this before we await others
+    DB.sessions.loadDatabase();
 
-    // transform the auth callback's code into a real access_token
-    return playlist.authorize(code)
-      .then(token => {
-        // save token for later
-        req.session.spotifyAuth = token
+    let spotifyApi = authedApi(),
+        { code, state } = queryParams(req),
+        tokens = (await spotifyApi.authorizationCodeGrant(code)).body,
+        { expires_in, access_token, refresh_token } = tokens;
 
-        return token
-      })
-      .then(() => {
-        // bounce back to home
-        return response({ '🚕': '💨' }, 302, { Location: '/' })
-      })
+    console.log(`Authorizing with code ${code.substr(0,10)}...${code.substr(-7)}`);
+
+    req.session.spotifyAuth = {
+      grantTime: new Date(state),
+      expiryTime: new Date(state + expires_in * 1000),
+      expiresIn: expires_in,
+      accessToken: access_token,
+      refreshToken: refresh_token
+    };
+
+    DB.sessions.insert(req.session.spotifyAuth);
+
+    return response({ '🚕': '💨' }, 302, { Location: '/' })
   }
 
   static async session(req) {
+    // fire this before we await others
+    DB.sessions.loadDatabase();
+
     // check session for access token
     // if exist, validate it (getUser) and continue
     // if not or getUser fails, send authorizeURL
 
-    let playlist = new Playlist(req.session),
-        { spotifyApi } = playlist;
-
-    // short-circuit if we have no auth
-    // this is a bit hacky -- fucks the seperation of concerns between
-    // this controller and playlist (which shouldn't have to deal with the
-    // session implementation directly ugh)
-    if (!req.session.spotifyAuth) {
-      return response({
-        authorizeURL: playlist.getAuthorizeURL()
-      })
-    }
-
-    // Attempt validation of token
     try {
-      // await spotifyApi.refreshAccessToken();
+      let spotifyApi = authedApi(req),
+          user = (await spotifyApi.getMe()).body;
 
-      let user = (await spotifyApi.getMe()).body;
+      let refreshedTokens = await spotifyApi.refreshAccessToken();
+
+      console.log('token refreshed', refreshedTokens);
 
       return response({
+        auth: req.session && req.session.spotifyAuth,
         user
       });
 
-    } catch (error) {
-      console.log('spotifyAuth: failed', error);
+    } catch (e) {
+      let spotifyApi = authedApi(),
+          scopes = [
+            'playlist-read-private',
+            'playlist-read-collaborative',
+            'playlist-modify-public',
+            'playlist-modify-private',
+            'user-library-read',
+            // 'user-read-email'
+          ],
+          state = Date.now(),
+          authorizeURL = spotifyApi.createAuthorizeURL(scopes, state)
 
-      // returns a non-error (such as 401) status code since the frontend
-      // is intended to consume the response (and display authURL)
+      // Create the authorization URL
       return response({
-        error,
-        authorizeURL: playlist.getAuthorizeURL()
+        authorizeURL
       })
     }
   }
