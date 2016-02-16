@@ -21,7 +21,7 @@ export default function(req, res, next) {
         if (!code)
           throw new Error('Render Error: code missing');
 
-        console.log('rendering', req.url, code, response, headers);
+        console.log('rendering', req.url, code, headers);
         res.writeHead(code, {
           'Content-Type': 'application/json',
           ...headers

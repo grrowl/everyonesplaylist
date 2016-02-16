@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes, createFragment } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, dispatch } from 'react-redux';
 
@@ -6,7 +6,7 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 import * as SessionActions from '../actions/session';
 
-import EmojiStatus, { transitions } from '../components/emojiStatus';
+import EmojiStatus, { transitionStyles } from '../components/emojiStatus';
 
 export default class App extends Component {
   componentDidMount() {
@@ -80,19 +80,54 @@ export default class App extends Component {
     )
   }
 
+  renderPlaylistStatus() {
+    let { playlists } = this.props;
+
+    if (!playlists) {
+      return (
+        <EmojiStatus emoji="💬" key="playlists.waiting">
+          playlists waiting…
+        </EmojiStatus>
+      );
+    }
+
+    if (playlists.pending) {
+      return (
+        <EmojiStatus emoji="💬" key="playlists.pending">
+          playlists checking…
+        </EmojiStatus>
+      );
+    }
+
+    if (playlists.items && playlists.items.length === 0) {
+      return (
+        <EmojiStatus emoji="💤" key="${name}.inactive">
+          playlists are empty
+        </EmojiStatus>
+      );
+    }
+
+    return (
+      <EmojiStatus emoji="💘" key="${name}.result">
+        platlists loaded my friend
+      </EmojiStatus>
+    )
+  }
+
   render() {
     const { session } = this.props,
           transitionOptions = {
-            transitionEnterTimeout: 750,
-            transitionLeaveTimeout: 750,
-            transitionName: transitions
+            transitionEnterTimeout: 1000,
+            transitionLeaveTimeout: 1000,
+            transitionName: transitionStyles
           };
 
     return (
       <div className="statusContainer">
         <CSSTransitionGroup {...transitionOptions}>
           { this.renderSession(session) }
-          { this.renderExperiment('matchmaker') }
+          { /*this.renderExperiment('matchmaker')*/ }
+          { this.renderPlaylistStatus() }
         </CSSTransitionGroup>
       </div>
     );
