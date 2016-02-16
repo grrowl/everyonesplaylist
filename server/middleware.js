@@ -1,4 +1,7 @@
 
+// server/middleware
+// exposes the API on our public http port
+
 import url from 'url';
 import uniloc from 'uniloc';
 

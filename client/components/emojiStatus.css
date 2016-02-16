@@ -57,17 +57,25 @@
 */
 
 /*
-  on enter, container will "burst" open (500ms) and the emoji will expand to
+  on enter, container will half-open (250ms),
+    the emoji will intro (250ms delay + 250ms),
+    the text will already have appeared,
+    the container will full-open (500ms + 250ms)
+
+  container will "burst" open (500ms) and the emoji will expand to
   its square width (250ms delay + 500ms)
 
   total duration 1000ms
 */
 .enter.containerStyle {
-  height: 1px;
-  transition: height 500ms cubic-bezier(0.23, 1, 0.32, 1);
+  /*height: 1px;*/
+  /*transition: height 500ms cubic-bezier(0.23, 1, 0.32, 1);*/
+  animation-duration: 1000ms;
+  animation-name: openRow;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
 }
 .enter.enterActive.containerStyle {
-  height: 100px;
+  /*height: 100px;*/
 }
 .enter .emojiStyle {
   width: 1px;
@@ -86,16 +94,23 @@
   total duration 1000ms
 */
 .leave.containerStyle {
-  height: 100px;
-  opacity: 1;
+  /*height: 100px;*/
+  /*opacity: 1;
+  transition: opacity 100ms 650ms ease-out;*/
 
-  transition:
+  /*transition:
     height 500ms 250ms cubic-bezier(0.23, 1, 0.32, 1),
-    opacity 100ms 650ms ease-out;
+    opacity 100ms 650ms ease-out;*/
+
+  animation-duration: 1000ms;
+  animation-name: openRow;
+  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  animation-direction: reverse;
+
 }
 .leave.leaveActive.containerStyle {
-  height: 1px;
-  opacity: 0.01;
+  /*height: 1px;*/
+  /*opacity: 0.01;*/
 }
 .leave .emojiStyle {
   min-width: 5%;
@@ -110,15 +125,35 @@
   max-width: 10000px;
 
   transition:
-    opacity 500ms cubic-bezier(0.23, 1, 0.32, 1),
-    padding 500ms ease-out,
-    max-width 500ms ease-out;
+    opacity 250ms cubic-bezier(0.23, 1, 0.32, 1),
+    padding 250ms ease-out,
+    max-width 250ms ease-out;
 
 }
 .leave.leaveActive .contentStyle {
   opacity: 0.01;
   padding: 0px;
   max-width: 1px;
+}
+
+@keyframes openRow {
+  0% {
+    height: 1px;
+    opacity: 0.01;
+  }
+  20% {
+    opacity: 1;
+  }
+  25% {
+    /* account for adjacent contents: they'll be 1px tall + 5px margin */
+    height: 44px;
+  }
+  75% {
+    height: 44px;
+  }
+  100% {
+    height: 100px;
+  }
 }
 
 @keyframes backgroundAnim {
@@ -128,5 +163,4 @@
   to {
     background-position: 0px 0px;
   }
-
 }

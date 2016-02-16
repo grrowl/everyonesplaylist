@@ -16,7 +16,15 @@ Client: `npm run client` or `webpack --progress --watch`
   * lovers collaborative playlist
   * playlist publishing (would be nice to have its own route for public display)
 
-* getPlaylists in experiements return max 20 results. need to implement paging
+* add spotify developer terms-of-use things
+  * "log in with spotify" styling <https://developer.spotify.com/design/>
+  * add "not affiliated or endorsed by spotify"
+  * <https://developer.spotify.com/developer-terms-of-use/>
+    * pre-launch requirements
+    * V.8. "You must provide all users with a working mechanism to disconnect their Spotify Account from your application at any time and provide clear instructions on how to do so. [...] you agree to delete and no longer request or process any of that Spotify user’s data."
+    * V.10. "You must have an end user agreement and privacy policy."
+
+* getPlaylists in experiements return max 20 results. need to implement paging helper methods
 
 * react router, or any front-end routes implementation; for linking to individal
   playlists or experiments

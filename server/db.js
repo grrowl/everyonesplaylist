@@ -1,12 +1,11 @@
 
 import Datastore from 'nedb';
 
-let defaultConfig = {
-  // nedb options
+const defaultConfig = {
+  // nedb options, if any
 };
 
 export default {
-  defaultConfig: defaultConfig,
   sessions: new Datastore(defaultConfig),
-  playlists: new Datastore(defaultConfig)
+  experiments: new Datastore(defaultConfig)
 };
