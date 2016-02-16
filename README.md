@@ -2,22 +2,24 @@
 
 ## development
 
-Server: `forever index.js --watch`
-Client: `npm run watch` or `webpack --progress --watch`
+Server: `npm run` or `npm run dev`
+Client: `npm run client` or `webpack --progress --watch`
 
 ## to do
 
-* it would be nice to implement redux and a simple router so the ui can
-  actually progress. just on the client. serve index.html for all matching
-  requests (add them to routes.js) (gotta finish redux)
+* periodic tasks to:
+  * refresh user's `access_token`s with their `refresh_token`s before they expire
+  * run each active experiment, update playlists and databases
+
+* small-scale experiment, proof-of-concept (1-5 users range)
+  * super-charged collaborative playlists
+  * lovers collaborative playlist
+  * playlist publishing (would be nice to have its own route for public display)
 
 * getPlaylists in experiements return max 20 results. need to implement paging
 
-
-* ~~`req.callbackParams` will be set as long as there's things in the URL, but
-  those params will only work for one auth -- we need to redirect the user back
-  to `/` when they're validated~~
-
+* react router, or any front-end routes implementation; for linking to individal
+  playlists or experiments
 
 ### dumb-level priority
 
@@ -33,6 +35,7 @@ Client: `npm run watch` or `webpack --progress --watch`
 - controllers.js defines the controllers. MUST respond with something that
   resolves to a `{ response, code }`-shaped object (either object itself or a
   promise which resolves to the value)
+- experiments.js are experiments fired by the `experiment` controller
 
 
 ## credits

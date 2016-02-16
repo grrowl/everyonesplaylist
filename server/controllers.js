@@ -62,13 +62,13 @@ class Controllers {
     let spotifyApi = authedApi(),
         { code, state } = queryParams(req),
         tokens = (await spotifyApi.authorizationCodeGrant(code)).body,
-        { expires_in, access_token, refresh_token } = tokens;
+        { expires_in, access_token, refresh_token } = tokens,
+        grantTime = parseInt(state);
 
+    console.log(`grandTime: ${new Date(state)} from ${state}`);
     console.log(`Authorizing with code ${code.substr(0,10)}...${code.substr(-7)}`);
 
     req.session.spotifyAuth = {
-      grantTime: new Date(state),
-      expiryTime: new Date(state + expires_in * 1000),
       expiresIn: expires_in,
       accessToken: access_token,
       refreshToken: refresh_token
@@ -91,9 +91,9 @@ class Controllers {
       let spotifyApi = authedApi(req),
           user = (await spotifyApi.getMe()).body;
 
-      let refreshedTokens = await spotifyApi.refreshAccessToken();
-
-      console.log('token refreshed', refreshedTokens);
+      // let refreshedTokens = await spotifyApi.refreshAccessToken();
+      // console.log('token refreshed', refreshedTokens);
+      // refreshed tokens don't save to session or database yet!
 
       return response({
         auth: req.session && req.session.spotifyAuth,

@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect, dispatch } from 'react-redux';
 
+import CSSTransitionGroup from 'react-addons-css-transition-group';
+
 import * as SessionActions from '../actions/session';
 
-import EmojiStatus from '../components/emojiStatus';
+import EmojiStatus, { transitions } from '../components/emojiStatus';
 
 export default class App extends Component {
   componentDidMount() {
@@ -17,7 +19,7 @@ export default class App extends Component {
   renderSession(session) {
     if (session.authorizeURL) {
       return (
-        <EmojiStatus emoji="🤔">
+        <EmojiStatus emoji="🤔" key="session.connect">
           <a href={ session.authorizeURL }>Connect with Spotify plz?</a>
         </EmojiStatus>
       )
@@ -28,14 +30,14 @@ export default class App extends Component {
         emoji = <img src={ session.user.images[0].url } />;
 
       return (
-        <EmojiStatus emoji={ emoji }>
+        <EmojiStatus emoji={ emoji } key="session.welcome">
           Welcome back, { session.user.display_name }
         </EmojiStatus>
       )
     }
 
     return (
-      <EmojiStatus emoji="💀">
+      <EmojiStatus emoji="💀" key="session.unknown">
         Unknown session state
       </EmojiStatus>
     )
@@ -45,9 +47,11 @@ export default class App extends Component {
     let { experiments = {} } = this.props,
         experiment = experiments[name];
 
+    //
+
     if (!experiment) {
       return (
-        <EmojiStatus emoji="💬">
+        <EmojiStatus emoji="💬" key={ `${name}.waiting` }>
           { name } waiting…
         </EmojiStatus>
       );
@@ -55,7 +59,7 @@ export default class App extends Component {
 
     if (experiment.pending) {
       return (
-        <EmojiStatus emoji="💬">
+        <EmojiStatus emoji="💬" key={ `${name}.pending` }>
           { name } checking…
         </EmojiStatus>
       );
@@ -63,29 +67,33 @@ export default class App extends Component {
 
     if (!experiment.active) {
       return (
-        <EmojiStatus emoji="💤">
+        <EmojiStatus emoji="💤" key={ `${name}.inactive` }>
           { name } not active.
         </EmojiStatus>
       );
     }
 
     return (
-      <EmojiStatus emoji="💘">
+      <EmojiStatus emoji="💘" key={ `${name}.result` }>
         { experiment.result }
       </EmojiStatus>
     )
   }
 
   render() {
-    const { session } = this.props;
+    const { session } = this.props,
+          transitionOptions = {
+            transitionEnterTimeout: 750,
+            transitionLeaveTimeout: 750,
+            transitionName: transitions
+          };
 
     return (
       <div className="statusContainer">
-        { this.renderSession(session) }
-        { this.renderExperiment('matchmaker') }
-        <blockquote>
-          { JSON.stringify(this.props.state) }
-        </blockquote>
+        <CSSTransitionGroup {...transitionOptions}>
+          { this.renderSession(session) }
+          { this.renderExperiment('matchmaker') }
+        </CSSTransitionGroup>
       </div>
     );
   }

@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
-import { containerStyle, emojiStyle, contentStyle } from './emojiStatus.css';
+import transitions, { containerStyle, emojiStyle, contentStyle } from './emojiStatus.css';
 
 export default class EmojiStatus extends Component {
+
   render() {
     const { emoji, children } = this.props;
 
@@ -30,3 +31,4 @@ EmojiStatus.defaultProps = {
 };
 
 export default EmojiStatus;
+export { transitions };
