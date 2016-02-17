@@ -23,6 +23,7 @@
     "express-session": "^1.12.1",
     "nedb": "^1.5.0",
     "nedb-session-store": "^1.1.1",
+    "promisify-me": "^0.1.1",
     "react": "^0.14.3",
     "react-addons-css-transition-group": "^0.14.7",
     "react-dom": "^0.14.3",

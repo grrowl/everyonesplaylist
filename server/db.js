@@ -1,11 +1,16 @@
 
-import Datastore from 'nedb';
+import Nedb from 'nedb';
+import Promisify from 'promisify-me';
 
-const defaultConfig = {
-  // nedb options, if any
-};
+const promisedNedb = Promisify(Nedb, 'nedb'),
+      defaultConfig = {
+        // nedb options, if any
+        autoload: true
+      };
 
-export default {
-  sessions: new Datastore(defaultConfig),
-  experiments: new Datastore(defaultConfig)
-};
+export default function connectDatabase(name) {
+  return new promisedNedb({
+    filename: `./data/${name}`,
+    ...defaultConfig
+  });
+}

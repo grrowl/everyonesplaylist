@@ -11,7 +11,7 @@ Client: `npm run client` or `webpack --progress --watch`
   1. visit site, must be authed
   2. list all playlists tracked on-site (from db.playlists) along with metadata
       and discovery tools
-  3. "play this playlist"
+  3. "play" "follow" this playlist
 
 * periodic tasks to:
   * refresh user's `access_token`s with their `refresh_token`s before they expire

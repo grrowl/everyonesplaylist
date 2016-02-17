@@ -1,10 +1,11 @@
 
 import url from 'url';
+import promisify from 'promisify-node';
 
 // <https://github.com/thelinmichael/spotify-web-api-node>
 import SpotifyWebApi from 'spotify-web-api-node';
 
-import DB from './db';
+import connectDatabase from './db';
 
 import { MatchMaker } from './experiments';
 
@@ -57,9 +58,8 @@ function authedApi(req) {
 class Controllers {
   static async authorize(req) {
     // fire this before we await others
-    DB.sessions.loadDatabase();
-
-    let spotifyApi = authedApi(),
+    let db = connectDatabase('authtokens'),
+        spotifyApi = authedApi(),
         { code, state } = queryParams(req),
         tokens = (await spotifyApi.authorizationCodeGrant(code)).body,
         { expires_in, access_token, refresh_token } = tokens,
@@ -74,14 +74,13 @@ class Controllers {
       refreshToken: refresh_token
     };
 
-    DB.sessions.insert(req.session.spotifyAuth);
+    await db.insert(req.session.spotifyAuth);
 
     return response({ '🚕': '💨' }, 302, { Location: '/' })
   }
 
   static async session(req) {
-    // fire this before we await others
-    DB.sessions.loadDatabase();
+    // let db = connectDatabase('sessions');
 
     // check session for access token
     // if exist, validate it (getUser) and continue
@@ -118,6 +117,40 @@ class Controllers {
         authorizeURL
       })
     }
+  }
+
+  // fetch known playlists from the DB
+  static async playlists(req, options) {
+    let db = new connectDatabase('playlists'),
+        playlists = await db.find({});
+
+    console.log('playlsists:', playlists);
+
+    return response({
+      playlists: JSON.stringify(playlists)
+    })
+  }
+
+  // fetch user playlists from spotify
+  static async userPlaylists(req, options) {
+    let api = authedApi(req),
+        user = (await spotifyApi.getMe()).body,
+        playlists = await (
+          await spotifyApi.getUserPlaylists(user.id, { limit: 50 })
+        ).body;
+
+    return response({
+      playlists
+    })
+  }
+
+  // fetch known playlists from the DB
+  static async userPlaylists(req, options) {
+    let db = connectDatabase('playlists');
+
+    return response({
+      playlists: await db.find()
+    })
   }
 
   static async experiment(req, options) {

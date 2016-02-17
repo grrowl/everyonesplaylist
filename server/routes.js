@@ -4,6 +4,10 @@ export const routes = {
 
   session: 'GET /api/session',
 
+  playlists: 'GET /api/playlists',
+  userPlaylists: 'GET /api/playlists/me',
+  addPlaylist: 'POST /api/playlists/me',
+
   experiment: 'GET /api/experiment/:name'
 }
 
