@@ -25,7 +25,7 @@ export default function userPlaylists(state = {}, action) {
     return {
       ...state,
       pending: false,
-      items: action.payload.item || []
+      items: action.payload.items || []
     };
 
   case actionTypes.FETCH_USER_PLAYLISTS_FAILED:

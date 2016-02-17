@@ -6,8 +6,6 @@ const defaultState = {
 }
 
 export default function playlists(state = {}, action) {
-  let name = action && action.payload && action.payload.name;
-
   // Reducer replaces `.items` wholesale with the action's result
 
   switch (action.type) {

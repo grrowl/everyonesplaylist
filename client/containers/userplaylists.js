@@ -42,24 +42,25 @@ export default class Playlists extends Component {
           indexEmojiLength = indexEmoji.length;
 
     return userPlaylists.items.map((playlist, index) =>
-      <EmojiStatus emoji={ indexEmoji[1 % indexEmojiLength] }
-        key="userplaylists.result">
+      <EmojiStatus emoji={ indexEmoji[index % indexEmojiLength] }
+        key={ `userplaylists.${playlist.id}` }>
         <h3>{ playlist.name }</h3>
         <Summary>
           <dt>tracks</dt>
             <dd>{ playlist.tracks.total }</dd>
           <dt>public</dt>
-            <dd>{ playlist.public }</dd>
+            <dd>{ playlist.public ? '✅' : '❌' }</dd>
           {
             !playlist.public
             && [
               <dt>collaborative</dt>,
-              <dd>{ playlist.collaborative }</dd>
+              <dd>{ playlist.collaborative ? '✅' : '❌' }</dd>
               ]
           }
         </Summary>
       </EmojiStatus>
     );
+
   }
 
   render() {
