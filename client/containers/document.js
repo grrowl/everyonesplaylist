@@ -5,7 +5,7 @@ export default function clientDocument(props) {
     <html>
     <head>
       <title>Spotify (umbrella)</title>
-      <link rel="stylesheet" href="/fonts/diamonds.css" />
+      <link rel="stylesheet" href="/fonts/porto.css" />
     </head>
     <body>
       <h1>Spotify 🏖</h1>
