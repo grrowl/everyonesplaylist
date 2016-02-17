@@ -32,6 +32,9 @@ export default class App extends Component {
       return (
         <EmojiStatus emoji={ emoji } key="session.welcome">
           Welcome back, { session.user.display_name }
+          <div>
+            <a href="#mine">add my playlists</a>
+          </div>
         </EmojiStatus>
       )
     }
@@ -46,14 +49,6 @@ export default class App extends Component {
   renderPlaylistStatus() {
     let { playlists } = this.props;
 
-    if (!playlists) {
-      return (
-        <EmojiStatus emoji="💬" key="playlists.waiting">
-          playlists waiting…
-        </EmojiStatus>
-      );
-    }
-
     if (playlists.pending) {
       return (
         <EmojiStatus emoji="💬" key="playlists.pending">
@@ -62,10 +57,18 @@ export default class App extends Component {
       );
     }
 
+    if (!playlists.items) {
+      return (
+        <EmojiStatus emoji="💬" key="playlists.pending">
+          playlists waiting…
+        </EmojiStatus>
+      );
+    }
+
     if (playlists.items && playlists.items.length === 0) {
       return (
         <EmojiStatus emoji="💤" key="${name}.inactive">
-          playlists are empty
+          no playlists found
         </EmojiStatus>
       );
     }
