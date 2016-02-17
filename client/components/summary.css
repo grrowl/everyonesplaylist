@@ -1,0 +1,15 @@
+
+.summaryStyle {
+  display: block;
+  font-size: smaller;
+}
+.summaryStyle dt {
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.summaryStyle dd {
+  display: inline-block;
+  font-weight: bold;
+  padding-right: 1em;
+}

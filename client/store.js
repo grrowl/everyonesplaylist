@@ -8,6 +8,8 @@ import { syncHistory } from 'react-router-redux';
 // @param initialState (object): state of the store
 // @param req (object): server request object. only for server rendering.
 export default function configureStore(initialState = {}, req) {
+  // awkward shitty place for req. should really move router stuff into app.js
+  // and be able to pass in additional middleware to this function
   let middlewares = [ promiseMiddleware() ];
   let reduxRouterMiddleware;
 

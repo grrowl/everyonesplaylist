@@ -63,7 +63,7 @@ class Controllers {
         { expires_in, access_token, refresh_token } = tokens,
         grantTime = parseInt(state);
 
-    console.log(`grandTime: ${new Date(state)} from ${state}`);
+    console.log(`grandTime: ${new Date(grantTime)} from ${grantTime}`);
     console.log(`Authorizing with code ${code.substr(0,10)}...${code.substr(-7)}`);
 
     req.session.spotifyAuth = {
@@ -120,34 +120,36 @@ class Controllers {
   // fetch known playlists from the DB
   static async playlists(req, options) {
     let db = new connectDatabase('playlists'),
-        playlists = await db.find({});
+        playlists = await db.find({}).exec();
 
-    console.log('playlsists:', playlists);
+    console.log('playlists', playlists);
+
+    if (playlists) {
+      return response(playlists)
+    }
 
     return response({
-      playlists: playlists || []
+      result: "No playlists found"
     })
   }
 
   // fetch user playlists from spotify
   static async userPlaylists(req, options) {
-    let api = authedApi(req),
+    let db = new connectDatabase('playlists'),
+        spotifyApi = authedApi(req),
         user = (await spotifyApi.getMe()).body,
-        playlists = await (
+        playlists = (
           await spotifyApi.getUserPlaylists(user.id, { limit: 50 })
         ).body;
 
-    return response({
-      playlists
-    })
-  }
+    console.log('userPlaylists', playlists);
 
-  // fetch known playlists from the DB
-  static async userPlaylists(req, options) {
-    let db = connectDatabase('playlists');
+    if (playlists) {
+      return response(playlists)
+    }
 
     return response({
-      playlists: await db.find()
+      result: "No playlists found"
     })
   }
 }

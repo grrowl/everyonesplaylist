@@ -1,6 +1,7 @@
 import React, { Component, PropTypes, createFragment } from 'react';
 import { bindActionCreators } from 'redux';
-import { connect, dispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { Handler, Link } from 'react-router';
 
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 
@@ -25,14 +26,15 @@ export default class App extends Component {
         </EmojiStatus>
       )
     } else if (session.user) {
-      let emoji = '🤔';
+      let emoji = '🤔',
+          addLink = <Link to="add">add my playlists</Link>;
 
       if (session.user.images && session.user.images.length)
         emoji = <img src={ session.user.images[0].url } />;
 
       return (
         <EmojiStatus emoji={ emoji } key="session.welcome"
-          action={ <Button>add my playlists</Button> }>
+          action={ addLink }>
           Welcome back, { session.user.display_name }
         </EmojiStatus>
       )
@@ -80,7 +82,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { session } = this.props,
+    const { session, children } = this.props,
           transitionOptions = {
             transitionEnterTimeout: 1000,
             transitionLeaveTimeout: 1000,
@@ -94,7 +96,7 @@ export default class App extends Component {
         </EmojiStatus>
         <CSSTransitionGroup {...transitionOptions}>
           { this.renderSession(session) }
-          { this.renderPlaylistStatus() }
+          { children }
         </CSSTransitionGroup>
       </div>
     );
