@@ -3,14 +3,14 @@ import Nedb from 'nedb';
 import Promisify from 'promisify-me';
 
 const promisedNedb = Promisify(Nedb, 'nedb'),
-      defaultConfig = {
-        // nedb options, if any
-        autoload: true
-      };
+      create = (name) =>
+        new promisedNedb({
+          filename: `./data/${name}.db`,
+          autoload: true
+        });
 
-export default function connectDatabase(name) {
-  return new promisedNedb({
-    filename: `./data/${name}.db`,
-    ...defaultConfig
-  });
+export default {
+  authTokens: create('authTokens'),
+  users: create('users'),
+  playlists: create('playlists')
 }
