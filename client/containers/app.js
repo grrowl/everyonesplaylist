@@ -7,6 +7,7 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 import * as SessionActions from '../actions/session';
 
 import EmojiStatus, { transitionStyles } from '../components/emojiStatus';
+import Button from '../components/button';
 
 export default class App extends Component {
   componentDidMount() {
@@ -30,11 +31,9 @@ export default class App extends Component {
         emoji = <img src={ session.user.images[0].url } />;
 
       return (
-        <EmojiStatus emoji={ emoji } key="session.welcome">
+        <EmojiStatus emoji={ emoji } key="session.welcome"
+          action={ <Button>add my playlists</Button> }>
           Welcome back, { session.user.display_name }
-          <div>
-            <a href="#mine">add my playlists</a>
-          </div>
         </EmojiStatus>
       )
     }
@@ -89,7 +88,10 @@ export default class App extends Component {
           };
 
     return (
-      <div className="statusContainer">
+      <div>
+        <EmojiStatus emoji="🌏">
+          <h1>Everyone's Playlist</h1>
+        </EmojiStatus>
         <CSSTransitionGroup {...transitionOptions}>
           { this.renderSession(session) }
           { this.renderPlaylistStatus() }

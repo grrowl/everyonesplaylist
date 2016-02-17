@@ -8,8 +8,6 @@ export default function clientDocument(props) {
       <link rel="stylesheet" href="/fonts/porto.css" />
     </head>
     <body>
-      <h1>Spotify 🏖</h1>
-
       <div id="content" dangerouslySetInnerHTML={
         {
           __html: props.content || "🔥 something went wrong"

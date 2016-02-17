@@ -5,22 +5,19 @@ import promiseMiddleware from 'redux-promise-middleware';
 import { browserHistory, createMemoryHistory } from 'react-router';
 import { syncHistory } from 'react-router-redux';
 
-export default function configureStore(initialState = {}) {
+// @param initialState (object): state of the store
+// @param req (object): server request object. only for server rendering.
+export default function configureStore(initialState = {}, req) {
   let middlewares = [ promiseMiddleware() ];
   let reduxRouterMiddleware;
 
   // add routing middleware
   if (typeof window === 'undefined') {
-    let location = initialState
-      && initialState.routing
-      && initialState.routing.location
-      && initialState.routing.location.pathname;
-
     // server render
-    if (!location)
-      throw new Error('Location pathname missing during server render');
+    if (!req)
+      throw new Error('Request missing during server render');
 
-    let history = createMemoryHistory(location);
+    let history = createMemoryHistory(req.url);
     reduxRouterMiddleware = syncHistory(history);
   } else {
     // browser render

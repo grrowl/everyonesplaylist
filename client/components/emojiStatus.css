@@ -51,13 +51,27 @@
   background-position: 5px 5px, 20px 20px;
   background-size: 30px 30px;
 }
+.theme3 .emojiStyle {
+  background-image: url('/images/pizza.png');
+}
 
 .contentStyle {
   flex: 1;
+  flex-grow: 1;
   padding: 10px;
 }
 .contentStyle::first-line {
   font-family: 'Porto', sans-serif;
+}
+
+.actionStyle {
+  padding: 10px;
+  flex: 1;
+  flex-shrink: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 /* transitions */

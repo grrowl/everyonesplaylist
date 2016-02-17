@@ -1,8 +1,13 @@
+
 import React from 'react';
 import { Provider } from 'react-redux';
-import App from './app';
+import { Router } from 'react-router'
+
+import routes from './routes';
 
 export default function Root(props) {
+  let { store, history } = props;
+
   return (
     /**
      * Provider is a component provided to us by the 'react-redux' bindings that
@@ -10,7 +15,9 @@ export default function Root(props) {
      * calls in component hierarchy below.
      */
     <Provider store={ props.store }>
-      <App />
+      <Router
+        history={ history }
+        routes={ routes } />
     </Provider>
   );
 }

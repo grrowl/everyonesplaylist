@@ -5,6 +5,7 @@ import "babel-polyfill";
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Router, { browserHistory } from 'react-router';
 
 /**
  * Both configureStore and Root are required conditionally.
@@ -21,11 +22,9 @@ for (let [actorName, actor] of Object.entries(Actors)){
   actor(store);
 }
 
-
 ReactDOM.render(
-  <Root store={ store }/>,
+  <Root store={ store } history={ browserHistory } />,
   document.getElementById('content')
 );
-
 
 console.log('hey bro');
