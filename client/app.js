@@ -14,7 +14,6 @@ import Root from './containers/root';
 import createStore from './store';
 import * as Actors from './actors'
 
-
 const store = createStore(/* initial state */);
 
 // activate each actor
