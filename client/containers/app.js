@@ -43,43 +43,6 @@ export default class App extends Component {
     )
   }
 
-  renderExperiment(name) {
-    let { experiments = {} } = this.props,
-        experiment = experiments[name];
-
-    //
-
-    if (!experiment) {
-      return (
-        <EmojiStatus emoji="💬" key={ `${name}.waiting` }>
-          { name } waiting…
-        </EmojiStatus>
-      );
-    }
-
-    if (experiment.pending) {
-      return (
-        <EmojiStatus emoji="💬" key={ `${name}.pending` }>
-          { name } checking…
-        </EmojiStatus>
-      );
-    }
-
-    if (!experiment.active) {
-      return (
-        <EmojiStatus emoji="💤" key={ `${name}.inactive` }>
-          { name } not active.
-        </EmojiStatus>
-      );
-    }
-
-    return (
-      <EmojiStatus emoji="💘" key={ `${name}.result` }>
-        { experiment.result }
-      </EmojiStatus>
-    )
-  }
-
   renderPlaylistStatus() {
     let { playlists } = this.props;
 
@@ -126,7 +89,6 @@ export default class App extends Component {
       <div className="statusContainer">
         <CSSTransitionGroup {...transitionOptions}>
           { this.renderSession(session) }
-          { /*this.renderExperiment('matchmaker')*/ }
           { this.renderPlaylistStatus() }
         </CSSTransitionGroup>
       </div>
@@ -139,7 +101,7 @@ App.propTypes = {};
 function mapStateToProps(state) {
   return {
     session: state.session,
-    experiments: state.experiments,
+    playlists: state.playlists,
     state: state
   };
 }

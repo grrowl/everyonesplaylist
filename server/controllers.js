@@ -7,8 +7,6 @@ import SpotifyWebApi from 'spotify-web-api-node';
 
 import connectDatabase from './db';
 
-import { MatchMaker } from './experiments';
-
 function response(response, code = 200, headers) {
   try {
     response = JSON.stringify(response)
@@ -127,7 +125,7 @@ class Controllers {
     console.log('playlsists:', playlists);
 
     return response({
-      playlists: JSON.stringify(playlists)
+      playlists: playlists || []
     })
   }
 
@@ -150,29 +148,6 @@ class Controllers {
 
     return response({
       playlists: await db.find()
-    })
-  }
-
-  static async experiment(req, options) {
-    let api = authedApi(req),
-        experiment;
-
-    switch (options.name) {
-      case 'matchmaker':
-        experiment = new MatchMaker(api);
-        break;
-
-      default:
-        throw new Error('Unknown experiment')
-    }
-
-    console.log(`experiment ${options.name}: ${JSON.stringify(experiment.debug)}`)
-
-    return response({
-      name: options.name,
-      active: experiment.active,
-      result: experiment.result,
-      ...(await experiment.run())
     })
   }
 }

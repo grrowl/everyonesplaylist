@@ -10,17 +10,14 @@ function promisedActions(type) {
 }
 
 export const actionTypes = {
-  ...promisedActions('FETCH_EXPERIMENT')
+  ...promisedActions('FETCH_PLAYLISTS')
 }
 
-export function fetch(name) {
+export function fetch() {
   return {
-    type: actionTypes.FETCH_EXPERIMENT,
+    type: actionTypes.FETCH_PLAYLISTS,
     payload: {
-      promise: apiRequest(`experiment/${name}`),
-      data: {
-        name
-      }
+      promise: apiRequest(`playlists`)
     }
   }
 }

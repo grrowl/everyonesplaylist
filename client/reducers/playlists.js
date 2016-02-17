@@ -1,10 +1,10 @@
-import { actionTypes } from '../actions/experiments';
+import { actionTypes } from '../actions/playlists';
 
-export default function experiment(state = {}, action) {
+export default function playlists(state = {}, action) {
   let name = action && action.payload && action.payload.name;
 
   switch (action.type) {
-  case actionTypes.FETCH_EXPERIMENT_PENDING:
+  case actionTypes.FETCH_PLAYLISTS_PENDING:
     return {
       ...state,
       [name]: {
@@ -12,7 +12,7 @@ export default function experiment(state = {}, action) {
       }
     };
 
-  case actionTypes.FETCH_EXPERIMENT_FULFILLED:
+  case actionTypes.FETCH_PLAYLISTS_FULFILLED:
     return {
       ...state,
       [name]: {
@@ -21,7 +21,7 @@ export default function experiment(state = {}, action) {
       }
     };
 
-  case actionTypes.FETCH_EXPERIMENT_FAILED:
+  case actionTypes.FETCH_PLAYLISTS_FAILED:
     return {
       ...state,
       [name]: {

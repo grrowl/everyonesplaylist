@@ -1,15 +1,15 @@
 
-import * as ExperimentActions from '../actions/experiments';
+import * as PlaylistActions from '../actions/playlists';
 
-export function experiments(store) {
+export function playlists(store) {
   let isDispatched = false;
 
   store.subscribe(() => {
-    let { session = {}, experiments = {} } = store.getState();
+    let { session = {}, playlists = {} } = store.getState();
 
     if (!isDispatched && session.user) {
       isDispatched = true;
-      store.dispatch(ExperimentActions.fetch('matchmaker'))
+      store.dispatch(PlaylistActions.fetch('playlists'))
     }
   })
 }

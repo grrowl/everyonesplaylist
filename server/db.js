@@ -10,7 +10,7 @@ const promisedNedb = Promisify(Nedb, 'nedb'),
 
 export default function connectDatabase(name) {
   return new promisedNedb({
-    filename: `./data/${name}`,
+    filename: `./data/${name}.db`,
     ...defaultConfig
   });
 }

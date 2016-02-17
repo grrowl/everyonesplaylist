@@ -6,9 +6,7 @@ export const routes = {
 
   playlists: 'GET /api/playlists',
   userPlaylists: 'GET /api/playlists/me',
-  addPlaylist: 'POST /api/playlists/me',
-
-  experiment: 'GET /api/experiment/:name'
+  addPlaylist: 'POST /api/playlists/me'
 }
 
 export const aliases = {

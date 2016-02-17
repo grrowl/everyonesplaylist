@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import session from './session';
-import experiments from './experiments';
+import playlists from './playlists';
 
 const rootReducer = combineReducers({
   session,
-  experiments
+  playlists
 });
 
 export default rootReducer;
