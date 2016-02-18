@@ -74,13 +74,14 @@ class Controllers {
 
     req.session.spotifyAuth = {
       grantTime,
+      sessionCount: 0,
       authorizeTime: new Date(),
       expiresIn: expires_in,
       accessToken: access_token,
       refreshToken: refresh_token
     };
 
-    await db.authTokens.insert(req.session.spotifyAuth);
+    await db.authTokens.insert(req.session.spotifyAuth)
 
     return response({ '🚕': '💨' }, 302, { Location: '/' })
   }
@@ -99,17 +100,16 @@ class Controllers {
       // console.log('token refreshed', refreshedTokens);
       // refreshed tokens don't save to session or database yet!
 
-      db.authTokens.update(
-        { accessToken: spotifyAuth.accessToken },
-        { $inc: 'sessionCount' })
+      await Promise.all([
+        db.authTokens.update(
+          { accessToken: spotifyAuth.accessToken },
+          { $inc: { sessionCount: 1 } }),
 
-      db.users.update(
-        { id: user.id },
-        user, { upsert: true })
-
-      db.users.update(
-        { id: user.id },
-        { $inc: 'sessionCount' });
+        db.users.update(
+          { id: user.id },
+          user,
+          { upsert: true })
+      ]);
 
       return response({
         auth: spotifyAuth,
@@ -148,7 +148,9 @@ class Controllers {
     let cachedPlaylists = await db.playlists.find({}).exec();
 
     if (cachedPlaylists) {
-      return response(cachedPlaylists)
+      return response({
+        items: cachedPlaylists
+      })
     }
 
     return response({
@@ -175,7 +177,6 @@ class Controllers {
 
   // fetch user playlists from spotify
   static async publishPlaylist(req, options) {
-    console.log('publishPlaylist(', options)
     let spotifyApi = authedApi(req),
         playlist = (
           await spotifyApi.getPlaylist(options.user, options.id)
@@ -183,7 +184,7 @@ class Controllers {
 
     // api will throw an error if not found
 
-    db.playlists.update(
+    await db.playlists.update(
       { id: playlist.id },
       playlist, { upsert: true })
 

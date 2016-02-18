@@ -40,6 +40,10 @@ Client: `npm run client` or `webpack --progress --watch`
 * `client/store.js` supports hot-reloading. add support for starting the HMR
   server (in app.js, when dev)
 
+* the Buttons are naff. make them cooler, emojiStatus style.
+  <https://www.youtube.com/watch?v=ryOR-lU6x7E>
+
+
 ## terms
 
 * "follow playlist": Spotify user follows a playlist to view it a lot.

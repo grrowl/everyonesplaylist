@@ -42,7 +42,7 @@ EmojiStatus.propTypes = {
   emoji: PropTypes.node,
   action: PropTypes.node,
   children: PropTypes.node,
-  onClick: PropTypes.function
+  onClick: PropTypes.func
 };
 
 EmojiStatus.defaultProps = {
