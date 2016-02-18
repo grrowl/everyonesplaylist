@@ -5,6 +5,7 @@ export default function clientDocument(props) {
     <html>
     <head>
       <title>Spotify (umbrella)</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <link rel="stylesheet" href="/fonts/porto.css" />
     </head>
     <body>

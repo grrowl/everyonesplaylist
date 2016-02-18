@@ -6,9 +6,10 @@
   "scripts": {
     "dev-debug": "NODE_ENV=development nodemon --ignore static --exec node --debug index.js",
     "dev": "NODE_ENV=development nodemon --ignore static index.js",
-    "start": "NODE_ENV=production node index.js",
-    "client": "webpack --progress",
-    "client-dev": "webpack --progress --watch",
+    "server": "NODE_ENV=production node index.js",
+    "start": "webpack -p --progress && NODE_ENV=production node index.js",
+    "client": "webpack -p --progress",
+    "client-dev": "webpack -d --watch --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tom mckenzie",
@@ -25,6 +26,7 @@
     "nedb": "^1.5.0",
     "nedb-session-store": "^1.1.1",
     "promisify-me": "^0.1.1",
+    "promisify-node": "^0.3.0",
     "react": "^0.14.3",
     "react-addons-css-transition-group": "^0.14.7",
     "react-dom": "^0.14.3",

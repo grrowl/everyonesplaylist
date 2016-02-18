@@ -7,7 +7,6 @@ module.exports = {
   output: {
     filename: './static/client.js'
   },
-  devtool: 'inline-source-map',
   module: {
     loaders: [
       {

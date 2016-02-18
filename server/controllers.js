@@ -47,7 +47,7 @@ function authedApi(req) {
   // throw if req was supplied but there is no token saved
   if (!auth) {
     if (req)
-      throw new Error(noAuthErrorMessage);
+      throw new NoAuthError('No session');
     else
       return spotifyApi;
   }
@@ -145,10 +145,10 @@ class Controllers {
 
   // fetch known playlists from the DB
   static async playlists(req, options) {
-    let playlists = await db.playlists.find({}).exec();
+    let cachedPlaylists = await db.playlists.find({}).exec();
 
-    if (playlists) {
-      return response(playlists)
+    if (cachedPlaylists) {
+      return response(cachedPlaylists)
     }
 
     return response({
