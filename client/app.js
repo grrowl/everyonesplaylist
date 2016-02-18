@@ -28,5 +28,3 @@ ReactDOM.render(
   <Root store={ store } history={ history } />,
   document.getElementById('content')
 );
-
-console.log('hey bro');

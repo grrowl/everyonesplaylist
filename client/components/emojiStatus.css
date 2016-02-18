@@ -59,9 +59,10 @@
   flex: 1;
   flex-grow: 1;
   padding: 10px;
+  font-family: 'Porto', sans-serif;
 }
 .contentStyle::first-line {
-  font-family: 'Porto', sans-serif;
+  font-size: 1.2em;
 }
 
 .actionStyle {

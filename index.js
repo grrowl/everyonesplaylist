@@ -5,7 +5,7 @@ require("babel-polyfill");
 require("css-modules-require-hook");
 
 // enable async stack traces, sometimes
-if (process.env.NODE_ENV !== 'production'){
+if (process.env.NODE_ENV === 'development'){
   process.env.longjohn = require('longjohn');
   console.log('👍  async stacktrace supported')
 }

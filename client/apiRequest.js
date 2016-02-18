@@ -6,8 +6,9 @@ class APIError extends Error {
   }
 }
 
-export default function request(path) {
+export default function request(path, method = 'GET') {
   return fetch(`/api/${path}`, {
+      method,
       credentials: 'same-origin'
     })
     .then(response => {

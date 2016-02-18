@@ -11,8 +11,21 @@ import Button from '../components/button';
 import Summary from '../components/summary';
 
 export default class Playlists extends Component {
+
+  publishPlaylist(playlist) {
+    let { dispatch } = this.props;
+
+    dispatch(UserPlaylistActions.publish(playlist.owner.id, playlist.id));
+  }
+
+  unpublishPlaylist(playlist) {
+    let { dispatch } = this.props;
+
+    dispatch(UserPlaylistActions.publish(playlist.owner.id, playlist.id));
+  }
+
   renderPlaylists() {
-    let { session, userPlaylists } = this.props;
+    let { session, userPlaylists } = this.props
 
     if (!session.user) {
       return (
@@ -39,11 +52,19 @@ export default class Playlists extends Component {
     }
 
     const indexEmoji = [ '🍕', '🐡', '🐓', '👽', '👹', '🚶' ],
-          indexEmojiLength = indexEmoji.length;
+          indexEmojiLength = indexEmoji.length,
+          renderPublishButton = (playlist) => (
+            true // selectedIds.includes(playlist.id)
+            ? <Button>📈 publish</Button>
+            : <Button onClick={ this.unpublishPlaylist.bind(this, playlist) }>
+              💔 unpublish</Button>
+          );
 
     return userPlaylists.items.map((playlist, index) =>
       <EmojiStatus emoji={ indexEmoji[index % indexEmojiLength] }
-        key={ `userplaylists.${playlist.id}` }>
+        action={ renderPublishButton(playlist) }
+        key={ `userplaylists.${playlist.id}` }
+        onClick={ this.publishPlaylist.bind(this, playlist) }>
         <h3>{ playlist.name }</h3>
         <Summary>
           <dt>tracks</dt>

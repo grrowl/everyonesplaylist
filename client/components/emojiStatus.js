@@ -15,11 +15,11 @@ export default class EmojiStatus extends Component {
   }
 
   render() {
-    const { emoji, action, children } = this.props,
+    const { emoji, action, children, onClick } = this.props,
           { themeStyle } = this.state;
 
     return (
-      <div className={ cx(containerStyle, themeStyle) }>
+      <div className={ cx(containerStyle, themeStyle) } onClick={ onClick }>
         <div className={ emojiStyle }>
           { emoji }
         </div>
@@ -41,7 +41,8 @@ export default class EmojiStatus extends Component {
 EmojiStatus.propTypes = {
   emoji: PropTypes.node,
   action: PropTypes.node,
-  children: PropTypes.node
+  children: PropTypes.node,
+  onClick: PropTypes.function
 };
 
 EmojiStatus.defaultProps = {

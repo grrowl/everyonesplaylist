@@ -3,7 +3,7 @@
 // exposes the API on our public http port
 
 import url from 'url';
-import uniloc from 'uniloc';
+import uniloc from 'uniloc-case-sensitive';
 
 import DB from './db';
 import { routes, aliases } from './routes';

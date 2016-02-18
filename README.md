@@ -40,6 +40,11 @@ Client: `npm run client` or `webpack --progress --watch`
 * `client/store.js` supports hot-reloading. add support for starting the HMR
   server (in app.js, when dev)
 
+## terms
+
+* "follow playlist": Spotify user follows a playlist to view it a lot.
+* "subscribe playlist": Application tracks a playlist. I GUESS. "publish" might be beta
+
 ## application structure
 
 ### server
@@ -56,3 +61,5 @@ Client: `npm run client` or `webpack --progress --watch`
 
 We've adapted much of the bootstrapping code from the wonderful
 simple-redux-boilerplate repo.
+
+There's a bit of swearing in the places that need improvement. Watch out if you're not a fan of it.

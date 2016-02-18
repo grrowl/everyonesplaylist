@@ -147,8 +147,6 @@ class Controllers {
   static async playlists(req, options) {
     let playlists = await db.playlists.find({}).exec();
 
-    console.log('playlists', playlists);
-
     if (playlists) {
       return response(playlists)
     }
@@ -166,8 +164,6 @@ class Controllers {
           await spotifyApi.getUserPlaylists(user.id, { limit: 50 })
         ).body;
 
-    console.log('userPlaylists', playlists);
-
     if (playlists) {
       return response(playlists)
     }
@@ -175,6 +171,23 @@ class Controllers {
     return response({
       result: "No playlists found"
     })
+  }
+
+  // fetch user playlists from spotify
+  static async publishPlaylist(req, options) {
+    console.log('publishPlaylist(', options)
+    let spotifyApi = authedApi(req),
+        playlist = (
+          await spotifyApi.getPlaylist(options.user, options.id)
+        ).body;
+
+    // api will throw an error if not found
+
+    db.playlists.update(
+      { id: playlist.id },
+      playlist, { upsert: true })
+
+    return response(playlist);
   }
 }
 
