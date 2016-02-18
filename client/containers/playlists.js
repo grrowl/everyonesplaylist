@@ -35,11 +35,28 @@ export default class Playlists extends Component {
       );
     }
 
-    return (
-      <EmojiStatus emoji="💘" key="playlists.result">
-        platlists loaded my friend
+    const indexEmoji = [ '🍕', '🐡', '🐓', '👽', '👹', '🚶' ],
+          indexEmojiLength = indexEmoji.length;
+
+    return playlists.items.map((playlist, index) =>
+      <EmojiStatus emoji={ indexEmoji[index % indexEmojiLength] }
+        key={ `playlists.${playlist.id}` }>
+        <h3>{ playlist.name }</h3>
+        <Summary>
+          <dt>tracks</dt>
+            <dd>{ playlist.tracks.total }</dd>
+          <dt>followers</dt>
+            <dd>{ playlist.followers.total ? '✅' : '❌' }</dd>
+          {/*
+          <dt>public</dt>
+            <dd>{ playlist.public ? '✅' : '❌' }</dd>
+          <dt>owner</dt>
+            <dd>{ playlist.owner.id ? '✅' : '❌' }</dd>
+          */}
+
+        </Summary>
       </EmojiStatus>
-    )
+    );
   }
 
   render() {

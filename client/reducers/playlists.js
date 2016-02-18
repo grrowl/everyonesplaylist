@@ -19,14 +19,13 @@ export default function playlists(state = {}, action) {
     return {
       ...state,
       pending: false,
-      items: action.payload  || []
+      items: action.payload.items  || []
     };
 
   case actionTypes.FETCH_PLAYLISTS_FAILED:
     return {
       ...state,
-      pending: false,
-      items: action.payload || []
+      pending: false
     };
 
   default:
