@@ -6,10 +6,7 @@ const defaultState = {
 }
 
 export default function userPlaylists(state = {}, action) {
-  let name = action && action.payload && action.payload.name;
-
   // Reducer replaces `.items` wholesale with the action's result
-
   switch (action.type) {
   case actionTypes.FETCH_USER_PLAYLISTS_PENDING:
     return {
@@ -18,10 +15,7 @@ export default function userPlaylists(state = {}, action) {
     };
 
   case actionTypes.FETCH_USER_PLAYLISTS_FULFILLED:
-    // early bail for actions not fitting criteria
-    if (!action.payload.items)
-      return state;
-
+    console.log('hello oooh', action.payload, action.payload.items.length)
     return {
       ...state,
       pending: false,

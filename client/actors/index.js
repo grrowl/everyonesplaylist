@@ -19,10 +19,11 @@ export function userPlaylists(store) {
   let isDispatched = false;
 
   store.subscribe(() => {
-    let { session = {}, routing = {} } = store.getState();
+    let { session = {}, location = {} } = store.getState();
 
-    if (!isDispatched && session.auth
-        && routing.location && routing.location.pathname === '/add') {
+    console.log('actor/userPlaylists', isDispatched, session.auth, location.pathname);
+
+    if (!isDispatched && session.auth && location.pathname === '/add') {
       isDispatched = true;
       store.dispatch(UserPlaylistActions.fetch('me'))
     }

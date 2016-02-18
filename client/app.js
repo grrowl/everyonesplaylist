@@ -5,17 +5,19 @@ import "babel-polyfill";
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Router, { browserHistory } from 'react-router';
+import Router from 'react-router';
 
-/**
- * Both configureStore and Root are required conditionally.
- * See configureStore.js and Root.js for more details.
- */
+import { connectHistory } from 'redux-history';
+import { createHistory, useQueries } from 'history';
+
 import Root from './containers/root';
 import createStore from './store';
 import * as Actors from './actors'
 
-const store = createStore(/* initial state */);
+const store = createStore();
+
+const history = useQueries(createHistory)();
+const unconnectHistory = connectHistory(history, store);
 
 // activate each actor
 for (let [actorName, actor] of Object.entries(Actors)){
@@ -23,7 +25,7 @@ for (let [actorName, actor] of Object.entries(Actors)){
 }
 
 ReactDOM.render(
-  <Root store={ store } history={ browserHistory } />,
+  <Root store={ store } history={ history } />,
   document.getElementById('content')
 );
 

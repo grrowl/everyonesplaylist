@@ -23,7 +23,12 @@ function queryParams(req) {
   return url.parse(req.url, true).query
 }
 
-const noAuthErrorMessage = 'API auth tokens not available';
+class NoAuthError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'NoAuthError';
+  }
+}
 
 // Set up api accessor with the session's token
 // @param (optional): req, the request. if omitted will return unauthed api
@@ -112,10 +117,9 @@ class Controllers {
       });
 
     } catch (e) {
-      // make sure we're handling a "NoAuthError" -- otherwise we don't want
-      // any part of it.
-
-      if (e.message !== noAuthErrorMessage)
+      // make sure we're handling a "NoAuthError" (no access_token exists)
+      // or "WebapiError" (couldn't getMe(), token may have expired)
+      if (e.name !== 'WebapiError' && e.name !== 'NoAuthError')
         throw e;
 
       let spotifyApi = authedApi(),
@@ -130,7 +134,7 @@ class Controllers {
           state = Date.now(),
           authorizeURL = spotifyApi.createAuthorizeURL(scopes, state)
 
-      console.log('Error fetching session:', e);
+      console.log('Error fetching session:', e.name, e.message);
 
       // Create the authorization URL
       return response({

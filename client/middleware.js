@@ -4,7 +4,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/server'; // middleware is server
-import { match, createMemoryHistory } from 'react-router';
+import { createMemoryHistory } from 'react-router';
 
 import createStore from './store';
 import Root from './containers/root';
@@ -12,7 +12,9 @@ import Document from './containers/document';
 
 export default function clientMiddleware(req, res) {
   // create store
-  const store = createStore({}, req);
+  // we're not passing in routing middleware, so location won't be available
+  // in the data store (only to react-router itself)
+  const store = createStore();
 
   // render page
   let html = ReactDOM.renderToString(

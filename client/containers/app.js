@@ -27,7 +27,7 @@ export default class App extends Component {
       )
     } else if (session.user) {
       let emoji = '🤔',
-          addLink = <Link to="add">add my playlists</Link>;
+          addLink = <Link to="/add">add my playlists</Link>;
 
       if (session.user.images && session.user.images.length)
         emoji = <img src={ session.user.images[0].url } />;

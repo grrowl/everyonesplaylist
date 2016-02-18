@@ -10,6 +10,6 @@
 
 .summaryStyle dd {
   display: inline-block;
-  font-weight: bold;
+  /*font-weight: bold; */ /* fucks up emoji rendering (osx) */
   padding-right: 1em;
 }

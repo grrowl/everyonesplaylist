@@ -2,29 +2,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import rootReducer from './reducers';
 import promiseMiddleware from 'redux-promise-middleware';
 
-import { browserHistory, createMemoryHistory } from 'react-router';
-import { syncHistory } from 'react-router-redux';
-
-// @param initialState (object): state of the store
-// @param req (object): server request object. only for server rendering.
-export default function configureStore(initialState = {}, req) {
-  // awkward shitty place for req. should really move router stuff into app.js
-  // and be able to pass in additional middleware to this function
+// we're not accepting initialState yet so no rehydration can happen (yet)
+export default function configureStore() {
   let middlewares = [ promiseMiddleware() ];
-  let reduxRouterMiddleware;
-
-  // add routing middleware
-  if (typeof window === 'undefined') {
-    // server render
-    if (!req)
-      throw new Error('Request missing during server render');
-
-    let history = createMemoryHistory(req.url);
-    reduxRouterMiddleware = syncHistory(history);
-  } else {
-    // browser render
-    reduxRouterMiddleware = syncHistory(browserHistory);
-  }
 
   if (process.env.NODE_ENV === 'development') {
     const logger = require('redux-logger')();
@@ -47,12 +27,6 @@ export default function configureStore(initialState = {}, req) {
       : f => f),
     )(createStore);
 
-  const store = finalCreateStore(rootReducer, initialState);
-
-  if (process.env.NODE_ENV === 'development') {
-    // support replaying actions
-    reduxRouterMiddleware.listenForReplays(store)
-  }
-
-  return store;
+  return finalCreateStore(rootReducer);
+  // return finalCreateStore(rootReducer, initialState);, perhaps?
 }
