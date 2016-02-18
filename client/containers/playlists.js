@@ -6,6 +6,7 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 import EmojiStatus, { transitionStyles } from '../components/emojiStatus';
 import Button from '../components/button';
+import Summary from '../components/summary';
 
 export default class Playlists extends Component {
   renderPlaylistStatus() {
