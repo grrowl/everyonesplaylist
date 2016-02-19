@@ -1,0 +1,109 @@
+
+.emojiBox {
+  width: 100px;
+  height: 100px;
+  font-size: 50px;
+  overflow: hidden;
+
+  text-shadow: 3px 3px 0px white,
+    -3px -3px 0px white,
+    3px -3px 0px white,
+    -3px 3px 0px white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconBox {
+  /*composes: emojiBox;*/
+}
+.iconBox img {
+  width: auto;
+  max-width: 80px;
+  max-height: 80px;
+  margin: 10px;
+  border: 3px solid white;
+}
+
+.actionBox {
+  /*composes: emojiBox;*/
+
+  font-size: 3.9vh;
+}
+
+.theme1 .iconBox {
+  /* diagonal lines */
+  background: repeating-linear-gradient(
+    45deg,
+    white,
+    white 8px,
+    black 8px,
+    black 10px
+  );
+}
+.theme2 .iconBox {
+  /* polkadots */
+  background:
+    radial-gradient(black 15%, transparent 16%),
+    radial-gradient(black 15%, transparent 16%),
+    white;
+
+  background-position: 5px 5px, 20px 20px;
+  background-size: 30px 30px;
+}
+.theme3 .iconBox {
+  background-image: url('/images/pizza.png');
+}
+
+.actionBox {
+  background-image: url('/images/pizza.png');
+}
+
+/* transitions */
+/*
+  easing is easeOutQuint: cubic-bezier(0.23, 1, 0.32, 1);
+  from <http://easings.net/#easeOutQuint>
+
+  .containerStyle is at root of the animation (hence .enter.containerStyle)
+*/
+
+/*
+  on enter, container will "burst" open (500ms) and the emoji will expand to
+  its square width (250ms delay + 500ms)
+
+  total duration 1000ms
+*/
+.enter .iconBox {
+  width: 1px;
+  transition: width 500ms 250ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.enter.enterActive .iconBox {
+  width: 100px;
+  animation: 1s cubic-bezier(0.645, 0.045, 0.355, 1) infinite backgroundAnim;
+}
+
+
+/*
+  on leave, emoji will expand out to 100% (500ms) and the container will
+  fold down. ideally around a similar time as new containers expand out
+
+  total duration 1000ms
+*/
+.leave .iconBox {
+  min-width: 5%;
+  transition: min-width 500ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.leave.leaveActive .iconBox {
+  min-width: 100%;
+  animation: 100ms cubic-bezier(0.645, 0.045, 0.355, 1) infinite backgroundAnim;
+}
+
+@keyframes backgroundAnim {
+  from {
+    background-position: 10px 0px;
+  }
+  to {
+    background-position: 0px 0px;
+  }
+}

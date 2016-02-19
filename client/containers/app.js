@@ -8,7 +8,7 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 import * as SessionActions from '../actions/session';
 
 import EmojiStatus from '../components/emojiStatus';
-import { transitionStyles } from '../components/emojiStyle';
+import { transitionStyle } from '../components/emojiStyle';
 import Button from '../components/button';
 
 export default class App extends Component {
@@ -91,10 +91,8 @@ export default class App extends Component {
           transitionOptions = {
             transitionEnterTimeout: 1000,
             transitionLeaveTimeout: 1000,
-            transitionName: transitionStyles
+            transitionName: transitionStyle
           };
-
-    console.log('transitionStyles', transitionStyles)
 
     return (
       <CSSTransitionGroup component="div" {...transitionOptions}>

@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import cx from 'classnames';
 
-import { buttonStyle } from './button.css';
 import { actionButton } from './emojiStyle.css';
 
 export default class Button extends Component {

@@ -5,7 +5,7 @@ import { connect, dispatch } from 'react-redux';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 import EmojiStatus from '../components/emojiStatus';
-import { transitionStyles } from '../components/emojiStyle';
+import { transitionStyle } from '../components/emojiStyle';
 import Button from '../components/button';
 import Summary from '../components/summary';
 
@@ -66,7 +66,7 @@ export default class Playlists extends Component {
           transitionOptions = {
             transitionEnterTimeout: 1000,
             transitionLeaveTimeout: 1000,
-            transitionName: transitionStyles
+            transitionName: transitionStyle
           };
 
     return (

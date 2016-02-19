@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
 import { containerStyle, contentStyle } from './emojiStatus.css';
-import { iconBox, actionBox } from './emojiStyle.css';
+import { emojiBox, iconBox, actionBox } from './emojiStyle.css';
 import { themeStyles } from './emojiStyle';
 
 export default class EmojiStatus extends Component {
@@ -20,7 +20,7 @@ export default class EmojiStatus extends Component {
 
     return (
       <div className={ cx(containerStyle, themeStyle) } onClick={ onClick }>
-        <div className={ iconBox }>
+        <div className={ cx(emojiBox, iconBox) }>
           { emoji }
         </div>
         <div className={ contentStyle }>
@@ -28,7 +28,7 @@ export default class EmojiStatus extends Component {
         </div>
         {
           action
-          ? <div className={ actionBox }>
+          ? <div className={ cx(emojiBox, actionBox) }>
               { action }
             </div>
           : null
