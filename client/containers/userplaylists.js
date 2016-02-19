@@ -6,7 +6,8 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 import * as UserPlaylistActions from '../actions/userplaylists';
 
-import EmojiStatus, { transitionStyles } from '../components/emojiStatus';
+import EmojiStatus from '../components/emojiStatus';
+import { transitionStyles } from '../components/emojiStyle';
 import Button from '../components/button';
 import Summary from '../components/summary';
 

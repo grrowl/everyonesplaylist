@@ -1,24 +1,29 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import cx from 'classnames';
 
 import { buttonStyle } from './button.css';
+import { actionButton } from './emojiStyle.css';
 
 export default class Button extends Component {
   render() {
-    const { icon, children } = this.props;
+    const { href, icon, onClick, children } = this.props,
+          Handler = ( href ? Link : 'a' )
 
     return (
-      <a className={ buttonStyle }>
+      <Handler to={ href } className={ actionButton } onClick={ onClick }>
         { icon }
         { icon ? ' ' : null }
         { children }
-      </a>
+      </Handler>
     );
   }
 }
 
 Button.propTypes = {
+  href: PropTypes.string,
   icon: PropTypes.node,
+  onClick: PropTypes.func,
   children: PropTypes.node.isRequired
 };
 

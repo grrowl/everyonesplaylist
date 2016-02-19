@@ -145,11 +145,15 @@ class Controllers {
 
   // fetch known playlists from the DB
   static async playlists(req, options) {
-    let cachedPlaylists = await db.playlists.find({}).exec();
+    let { published, cachedPlaylists } = await (
+          db.playlists.find({
+            published: true
+          }).exec()
+        );
 
     if (cachedPlaylists) {
       return response({
-        items: cachedPlaylists
+        items: cachedPlaylists.playlists
       })
     }
 
@@ -186,7 +190,24 @@ class Controllers {
 
     await db.playlists.update(
       { id: playlist.id },
-      playlist, { upsert: true })
+      {
+        published: true,
+        playlist
+      }, { upsert: true })
+
+    return response(playlist);
+  }
+
+  // fetch user playlists from spotify
+  static async unpublishPlaylist(req, options) {
+    let spotifyApi = authedApi(req);
+
+    await db.playlists.update(
+      { id: options.id },
+      {
+        published: false,
+        playlist
+      }, { upsert: true })
 
     return response(playlist);
   }

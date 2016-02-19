@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev-debug": "NODE_ENV=development nodemon --ignore static --exec node --debug index.js",
-    "dev": "NODE_ENV=development nodemon --ignore static index.js",
+    "dev": "NODE_ENV=development nodemon -e 'js css' --ignore static index.js",
     "server": "NODE_ENV=production node index.js",
     "start": "webpack -p --progress && NODE_ENV=production node index.js",
     "client": "webpack -p --progress",

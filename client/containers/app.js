@@ -7,7 +7,8 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 
 import * as SessionActions from '../actions/session';
 
-import EmojiStatus, { transitionStyles } from '../components/emojiStatus';
+import EmojiStatus from '../components/emojiStatus';
+import { transitionStyles } from '../components/emojiStyle';
 import Button from '../components/button';
 
 export default class App extends Component {
@@ -27,7 +28,11 @@ export default class App extends Component {
       )
     } else if (session.user) {
       let emoji = '🤔',
-          addLink = <Link to="/add">add my playlists</Link>;
+          addLink = (
+            location.pathname.match(/^\/?me$/) === null
+            ? <Link to="/me">add my playlists</Link>
+            : null
+          );
 
       if (session.user.images && session.user.images.length)
         emoji = <img src={ session.user.images[0].url } />;
@@ -82,23 +87,28 @@ export default class App extends Component {
   }
 
   render() {
-    const { session, children } = this.props,
+    const { session, children, location } = this.props,
           transitionOptions = {
             transitionEnterTimeout: 1000,
             transitionLeaveTimeout: 1000,
             transitionName: transitionStyles
           };
 
+    console.log('transitionStyles', transitionStyles)
+
     return (
-      <div>
-        <EmojiStatus emoji="🌏">
+      <CSSTransitionGroup component="div" {...transitionOptions}>
+        <EmojiStatus emoji="🌏"
+          action={
+            location.pathname.match(/^\/?$/) === null
+            ? <Button href="/">📼</Button>
+            : <Button>{ location.pathname }</Button> }>
           <h1>Everyone's Playlist</h1>
         </EmojiStatus>
-        <CSSTransitionGroup {...transitionOptions}>
-          { this.renderSession(session) }
-          { children }
-        </CSSTransitionGroup>
-      </div>
+
+        { this.renderSession(session) }
+        { children }
+      </CSSTransitionGroup>
     );
   }
 }

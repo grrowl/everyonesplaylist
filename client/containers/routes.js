@@ -8,7 +8,7 @@ import UserPlaylists from './userplaylists';
 
 const Routes = (
   <Route path="/" component={ App }>
-    <Route path="add" component={ UserPlaylists } />
+    <Route path="me" component={ UserPlaylists } />
     <IndexRoute component={ Playlists } />
   </Route>
 );

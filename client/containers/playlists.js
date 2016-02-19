@@ -4,7 +4,8 @@ import { connect, dispatch } from 'react-redux';
 
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 
-import EmojiStatus, { transitionStyles } from '../components/emojiStatus';
+import EmojiStatus from '../components/emojiStatus';
+import { transitionStyles } from '../components/emojiStyle';
 import Button from '../components/button';
 import Summary from '../components/summary';
 

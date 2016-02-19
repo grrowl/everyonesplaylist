@@ -1,16 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
 
-import transitionStyles, { containerStyle, emojiStyle, actionStyle, contentStyle } from './emojiStatus.css';
-
-const numberOfThemes = 3; // between 1...n
+import { containerStyle, contentStyle } from './emojiStatus.css';
+import { iconBox, actionBox } from './emojiStyle.css';
+import { themeStyles } from './emojiStyle';
 
 export default class EmojiStatus extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      themeStyle: transitionStyles[`theme${~~(Math.random() * numberOfThemes) + 1}`]
+      themeStyle: themeStyles[~~(Math.random() * themeStyles.length)]
     }
   }
 
@@ -20,7 +20,7 @@ export default class EmojiStatus extends Component {
 
     return (
       <div className={ cx(containerStyle, themeStyle) } onClick={ onClick }>
-        <div className={ emojiStyle }>
+        <div className={ iconBox }>
           { emoji }
         </div>
         <div className={ contentStyle }>
@@ -28,7 +28,7 @@ export default class EmojiStatus extends Component {
         </div>
         {
           action
-          ? <div className={ actionStyle }>
+          ? <div className={ actionBox }>
               { action }
             </div>
           : null
@@ -51,4 +51,3 @@ EmojiStatus.defaultProps = {
 };
 
 export default EmojiStatus;
-export { transitionStyles };
