@@ -5,6 +5,7 @@
   font-size: 50px;
   overflow: hidden;
 
+  text-align: center;
   text-shadow: 3px 3px 0px white,
     -3px -3px 0px white,
     3px -3px 0px white,
@@ -31,6 +32,46 @@
 
   font-size: 3.9vh;
 }
+.actionBox a {
+  text-decoration: none;
+
+  border-right: solid black;
+  border-right-width: 0px;
+
+  transition: border-right-width 1s cubic-bezier(0.86, 0, 0.07, 1);
+
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.actionBox a:hover {
+  height: 100%;
+  border-right-width: 17px;
+
+  transition: border-right-width 350ms ease-out;
+  animation: colorChange 1000ms infinite;/*,
+    borderBreathe 2s cubic-bezier(0.86, 0, 0.07, 1) infinite;*/
+}
+
+@keyframes colorChange {
+  0%   { background: maroon; }
+  25%  { background: yellow; }
+  50%  { background: cyan; }
+  75%  { background: limegreen; }
+  100% { background: maroon; }
+}
+
+@keyframes borderBreathe {
+  0%   {
+    border-left-width: 1px;
+  }
+  50%  { border-left-width: 17px; }
+  100% { border-left-width: 1px; }
+}
+
+/* themes */
 
 .theme1 .iconBox {
   /* diagonal lines */
@@ -74,11 +115,11 @@
 
   total duration 1000ms
 */
-.enter .iconBox {
+:global(.enter) .iconBox {
   width: 1px;
   transition: width 500ms 250ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.enter.enterActive .iconBox {
+:global(.enter.enterActive) .iconBox {
   width: 100px;
   animation: 1s cubic-bezier(0.645, 0.045, 0.355, 1) infinite backgroundAnim;
 }
@@ -90,11 +131,11 @@
 
   total duration 1000ms
 */
-.leave .iconBox {
+:global(.leave) .iconBox {
   min-width: 5%;
   transition: min-width 500ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.leave.leaveActive .iconBox {
+:global(.leave.leaveActive) .iconBox {
   min-width: 100%;
   animation: 100ms cubic-bezier(0.645, 0.045, 0.355, 1) infinite backgroundAnim;
 }

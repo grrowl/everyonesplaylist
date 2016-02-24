@@ -32,8 +32,16 @@ Client: `npm run client` or `webpack --progress --watch`
 
 * getPlaylists in experiements return max 20 results. need to implement paging helper methods
 
-* react router, or any front-end routes implementation; for linking to individal
-  playlists or experiments
+* descriptions and auto-tagging
+  * mine for the most commonly occurring words and synonyms, they become the
+    tags
+  * piror art: the playlist miner
+
+* on-site favourites/likes/follows.
+  * check feasability a user experience like soundcloud. browse around, find
+    something you're in the mood for, hit play and it goes forever (finish one
+    playlist starts a related playlist). users' like data helps enable this, as
+    well as description tagging, above.
 
 ### dumb-level priority
 
@@ -43,6 +51,9 @@ Client: `npm run client` or `webpack --progress --watch`
 * the Buttons are naff. make them cooler, emojiStatus style.
   <https://www.youtube.com/watch?v=ryOR-lU6x7E>
 
+* all playlists are public. therefore anyone can publish any playlist (even though
+  following it first). so anyone could unpublish any playlist. I guess we can
+  just disable unpublish, or have a specific "undo" (i like this)
 
 ## terms
 

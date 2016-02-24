@@ -145,7 +145,7 @@ class Controllers {
 
   // fetch known playlists from the DB
   static async playlists(req, options) {
-    let { published, cachedPlaylists } = await (
+    let cachedPlaylists = await (
           db.playlists.find({
             published: true
           }).exec()
@@ -168,7 +168,8 @@ class Controllers {
         user = (await spotifyApi.getMe()).body,
         playlists = (
           await spotifyApi.getUserPlaylists(user.id, { limit: 50 })
-        ).body;
+        ).body,
+        savedPlaylists
 
     if (playlists) {
       return response(playlists)

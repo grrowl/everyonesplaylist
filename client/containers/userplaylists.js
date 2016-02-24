@@ -55,10 +55,10 @@ export default class Playlists extends Component {
     const indexEmoji = [ '🍕', '🐡', '🐓', '👽', '👹', '🚶' ],
           indexEmojiLength = indexEmoji.length,
           renderPublishButton = (playlist) => (
-            true // selectedIds.includes(playlist.id)
-            ? <Button>📈 publish</Button>
+            playlists.publishedIds.include(playlist.id)
+            ? <Button>🗣</Button>
             : <Button onClick={ this.unpublishPlaylist.bind(this, playlist) }>
-              💔 unpublish</Button>
+              💔</Button>
           );
 
     return userPlaylists.items.map((playlist, index) =>
@@ -86,21 +86,14 @@ export default class Playlists extends Component {
   }
 
   render() {
-    const { session } = this.props,
-          transitionOptions = {
-            transitionEnterTimeout: 1000,
-            transitionLeaveTimeout: 1000,
-            transitionName: transitionStyle
-          };
+    const { session } = this.props;
 
-    return (
-      <CSSTransitionGroup {...transitionOptions}>
-        <EmojiStatus emoji="👇">
-          <h2>Pick your playlists</h2>
-        </EmojiStatus>
-        { this.renderPlaylists() }
-      </CSSTransitionGroup>
-    );
+    return ([
+      <EmojiStatus emoji="👇">
+        <h2>Pick your playlists</h2>
+      </EmojiStatus>,
+      this.renderPlaylists()
+    ]);
   }
 }
 

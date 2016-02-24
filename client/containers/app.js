@@ -99,8 +99,8 @@ export default class App extends Component {
         <EmojiStatus emoji="🌏"
           action={
             location.pathname.match(/^\/?$/) === null
-            ? <Button href="/">📼</Button>
-            : <Button>{ location.pathname }</Button> }>
+            ? <Button href="/">🔙</Button>
+            : null }>
           <h1>Everyone's Playlist</h1>
         </EmojiStatus>
 

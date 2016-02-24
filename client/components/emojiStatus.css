@@ -34,11 +34,11 @@
 
   total duration 1000ms
 */
-.enter.containerStyle {
+:global(.enter).containerStyle {
   height: 1px;
   transition: height 500ms cubic-bezier(0.23, 1, 0.32, 1);
 }
-.enter.enterActive.containerStyle {
+:global(.enter.enterActive).containerStyle {
   height: 100px;
 }
 
@@ -48,7 +48,7 @@
 
   total duration 1000ms
 */
-.leave.containerStyle {
+:global(.leave).containerStyle {
   height: 100px;
   opacity: 1;
   transform: translateY(0px);
@@ -58,21 +58,21 @@
     transform 500ms 250ms cubic-bezier(0.23, 1, 0.32, 1),
     opacity 250ms 500ms ease-out;
 }
-.leave.leaveActive.containerStyle {
+:global(.leave.leaveActive).containerStyle {
   height: 1px;
   margin: 0px;
   opacity: 0.01;
   transform: translateY(-3px);
 }
-.leave.containerStyle + .containerStyle {
+:global(.leave).containerStyle + .containerStyle {
   margin-top: 5px;
 }
-.leave.leaveActive.containerStyle + .containerStyle {
+:global(.leave.leaveActive).containerStyle + .containerStyle {
   margin-top: -3px;
   transition:
     margin-top 250ms 500ms ease-out;
 }
-.leave .contentStyle {
+:global(.leave) .contentStyle {
   opacity: 1;
   max-width: 200px;
 
@@ -82,7 +82,7 @@
     max-width 300ms ease-out;
 
 }
-.leave.leaveActive .contentStyle {
+:global(.leave.leaveActive) .contentStyle {
   opacity: 0.01;
   padding: 0px;
   max-width: 1px;
