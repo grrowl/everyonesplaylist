@@ -62,9 +62,18 @@ export default class Playlists extends Component {
   }
 
   render() {
-    const { session } = this.props;
+    const { session } = this.props,
+          transitionOptions = {
+            transitionEnterTimeout: 1000,
+            transitionLeaveTimeout: 1000,
+            transitionName: transitionStyle
+          };
 
-    return this.renderPlaylistStatus();
+    return (
+      <CSSTransitionGroup component="div" {...transitionOptions}>
+        { this.renderPlaylistStatus() }
+      </CSSTransitionGroup>
+    );
   }
 }
 

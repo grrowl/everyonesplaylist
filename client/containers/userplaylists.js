@@ -7,11 +7,11 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 import * as UserPlaylistActions from '../actions/userplaylists';
 
 import EmojiStatus from '../components/emojiStatus';
-import { transitionStyle } from '../components/emojiStyle';
+import { transitionOptions, emojiFor } from '../components/emojiStyle';
 import Button from '../components/button';
 import Summary from '../components/summary';
 
-export default class Playlists extends Component {
+export default class UserPlaylists extends Component {
 
   publishPlaylist(playlist) {
     let { dispatch } = this.props;
@@ -52,9 +52,7 @@ export default class Playlists extends Component {
       );
     }
 
-    const indexEmoji = [ '🍕', '🐡', '🐓', '👽', '👹', '🚶' ],
-          indexEmojiLength = indexEmoji.length,
-          renderPublishButton = (playlist) => (
+    const renderPublishButton = (playlist) => (
             playlists.publishedIds.include(playlist.id)
             ? <Button>🗣</Button>
             : <Button onClick={ this.unpublishPlaylist.bind(this, playlist) }>
@@ -62,7 +60,7 @@ export default class Playlists extends Component {
           );
 
     return userPlaylists.items.map((playlist, index) =>
-      <EmojiStatus emoji={ indexEmoji[index % indexEmojiLength] }
+      <EmojiStatus emoji={ emojiFor(index) }
         action={ renderPublishButton(playlist) }
         key={ `userplaylists.${playlist.id}` }
         onClick={ this.publishPlaylist.bind(this, playlist) }>
@@ -88,16 +86,19 @@ export default class Playlists extends Component {
   render() {
     const { session } = this.props;
 
-    return ([
-      <EmojiStatus emoji="👇">
-        <h2>Pick your playlists</h2>
-      </EmojiStatus>,
-      this.renderPlaylists()
-    ]);
+    return (
+      <CSSTransitionGroup component="div" {...transitionOptions}>
+        <EmojiStatus emoji="👇">
+          <h2>Pick your playlists</h2>
+        </EmojiStatus>
+
+        { this.renderPlaylists() }
+      </CSSTransitionGroup>
+    );
   }
 }
 
-Playlists.propTypes = {};
+UserPlaylists.propTypes = {};
 
 function mapStateToProps(state) {
   return {
@@ -108,4 +109,4 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps
-)(Playlists);
+)(UserPlaylists);

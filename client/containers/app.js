@@ -95,18 +95,20 @@ export default class App extends Component {
           };
 
     return (
-      <CSSTransitionGroup component="div" {...transitionOptions}>
-        <EmojiStatus emoji="🌏"
-          action={
-            location.pathname.match(/^\/?$/) === null
-            ? <Button href="/">🔙</Button>
-            : null }>
-          <h1>Everyone's Playlist</h1>
-        </EmojiStatus>
+      <div>
+        <CSSTransitionGroup component="div" {...transitionOptions}>
+          <EmojiStatus emoji="🌏"
+            action={
+              location.pathname.match(/^\/?$/) === null
+              ? <Button href="/">🔙</Button>
+              : null }>
+            <h1>Everyone's Playlist</h1>
+          </EmojiStatus>
 
-        { this.renderSession(session) }
+          { this.renderSession(session) }
+        </CSSTransitionGroup>
         { children }
-      </CSSTransitionGroup>
+      </div>
     );
   }
 }

@@ -6,7 +6,7 @@ export const themeStyles = [theme1, theme2, theme3];
 
 import { enter, enterActive, leave, leaveActive, appear, appearActive } from './emojiStyle.css';
 
-const transitionStyle = {
+export const transitionStyle = {
   enter: 'enter',
   enterActive: 'enterActive',
   leave: 'leave',
@@ -15,4 +15,22 @@ const transitionStyle = {
   appearActive: 'appearActive'
 }
 
-export { transitionStyle };
+export const transitionOptions = {
+  transitionEnterTimeout: 1000,
+  transitionLeaveTimeout: 1000,
+  transitionName: transitionStyle
+};
+
+export const emojiSet = [
+  // original set
+  '🍕', '🐡', '🐓', '👽', '👹', '🚶',
+  // least commonly used
+  '🍯', '🎣', '🚱', '💆', '🗽', '🔝', '💣', '🎧', '🍞',
+  // '⌛'️,
+  '🍝', '💅',
+  '👶', '👴', '🌄', '🌅'
+];
+
+export function emojiFor(index) {
+  return emojiSet[index % emojiSet.length];
+}
