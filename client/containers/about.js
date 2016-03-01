@@ -11,7 +11,7 @@ import EmojiStatus from '../components/emojiStatus';
 import { transitionOptions } from '../components/emojiStyle';
 import Button from '../components/button';
 
-import { plainContainerStyle } from '../components/emojiStatus.css';
+import { flexibleContainerStyle, contentStyle } from '../components/emojiStatus.css';
 
 export default class About extends Component {
 
@@ -22,11 +22,13 @@ export default class About extends Component {
           <h1>This one's for you</h1>
         </EmojiStatus>
 
-        <div className={ plainContainerStyle }>
-          <h1>A playlist for everyblobby</h1>
-          <p>
-            Hey dude this is all about how my life got flipturned upsidedown
-          </p>
+        <div className={ flexibleContainerStyle }>
+          <div className={ contentStyle }>
+            <h1>A playlist for everyblobby</h1>
+            <p>
+              Hey dude this is all about how my life got flipturned upsidedown
+            </p>
+          </div>
         </div>
       </CSSTransitionGroup>
     );

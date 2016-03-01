@@ -3,13 +3,14 @@
   display: block;
   font-size: smaller;
 }
+
 .summaryStyle dt {
   display: inline-block;
-  text-transform: uppercase;
-}
+  font-weight: bold;  /* fucks up emoji rendering tho */
 
+}
 .summaryStyle dd {
   display: inline-block;
   /*font-weight: bold; */ /* fucks up emoji rendering (osx) */
-  padding-right: 1em;
+  margin: 0 1.5em 0 0.5em;
 }

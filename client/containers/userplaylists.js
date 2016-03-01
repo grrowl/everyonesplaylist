@@ -4,7 +4,7 @@ import { connect, dispatch } from 'react-redux';
 
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 
-import * as UserPlaylistActions from '../actions/userplaylists';
+import * as PlaylistActions from '../actions/playlists';
 
 import EmojiStatus from '../components/emojiStatus';
 import { transitionOptions, emojiFor } from '../components/emojiStyle';
@@ -28,7 +28,7 @@ export default class UserPlaylists extends Component {
     this.setPlaylistPending(playlist, true);
 
     var publishAction =
-      dispatch(UserPlaylistActions.publish(playlist.owner.id, playlist.id));
+      dispatch(PlaylistActions.publish(playlist.owner.id, playlist.id));
 
     // ehh it feels dirty to jump through the hoops.
     // not sure if "return payload.promise from the promise middleware" is
@@ -44,7 +44,7 @@ export default class UserPlaylists extends Component {
     this.setPlaylistPending(playlist, true);
 
     var unpublishAction =
-      dispatch(UserPlaylistActions.unpublish(playlist.owner.id, playlist.id));
+      dispatch(PlaylistActions.unpublish(playlist.owner.id, playlist.id));
 
     // see above
     unpublishAction.payload.promise.then(() =>
@@ -64,7 +64,7 @@ export default class UserPlaylists extends Component {
   }
 
   renderPlaylists() {
-    let { session, userPlaylists } = this.props,
+    let { session, playlists } = this.props,
         { pendingIds } = this.state;
 
     if (!session.user) {
@@ -75,15 +75,17 @@ export default class UserPlaylists extends Component {
       );
     }
 
-    if (userPlaylists.pending) {
+    if (playlists.pending) {
       return (
         <EmojiStatus emoji="💬" key="userplaylists.pending">
-          fetching your playlists, hold tight…
+          hold tight while we fetch your playlists…
         </EmojiStatus>
       );
     }
 
-    if (!Array.isArray(userPlaylists.items) || userPlaylists.items.length === 0) {
+    // if there's non-user playlists in the store, they'll render too, unless
+    // you add a flag to the playlist objects.
+    if (!Array.isArray(playlists.items) || playlists.items.length === 0) {
       return (
         <EmojiStatus emoji="💤" key="userplaylists.inactive">
           no playlists found 😢
@@ -116,7 +118,7 @@ export default class UserPlaylists extends Component {
       );
     }
 
-    return userPlaylists.items.map((playlist, index) =>
+    return playlists.items.map((playlist, index) =>
       <EmojiStatus emoji={ emojiFor(index) }
         action={ renderPublishButton(playlist) }
         key={ `userplaylists.${playlist.id}` }
@@ -160,8 +162,7 @@ UserPlaylists.propTypes = {};
 function mapStateToProps(state) {
   return {
     session: state.session,
-    playlists: state.playlists,
-    userPlaylists: state.userPlaylists
+    playlists: state.playlists
   };
 }
 

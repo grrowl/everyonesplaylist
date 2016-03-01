@@ -1,13 +1,15 @@
 
-.containerStyle {
+.containerStyle, .flexibleContainerStyle {
   border: 1px solid black;
-  height: 100px;
   margin-bottom: 10px;
-  overflow: hidden;
 
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+.containerStyle {
+  height: 100px;
+  overflow: hidden;
 }
 
 .containerStyle h1, .containerStyle h2, .containerStyle h3, .containerStyle h4,

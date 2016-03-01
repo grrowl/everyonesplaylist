@@ -6,6 +6,8 @@ export const routes = {
 
   playlists: 'GET /api/playlists',
   userPlaylists: 'GET /api/playlists/me',
+  // could also receive
+  // userPlaylists: 'GET /api/playlists/:id',
 
   publishPlaylist: 'POST /api/playlists/:user/:id/publish',
   unpublishPlaylist: 'POST /api/playlists/:user/:id/unpublish'

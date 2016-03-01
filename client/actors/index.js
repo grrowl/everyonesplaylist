@@ -1,6 +1,5 @@
 
 import * as PlaylistActions from '../actions/playlists';
-import * as UserPlaylistActions from '../actions/userplaylists';
 
 export function playlists(store) {
   let isDispatched = false;
@@ -23,7 +22,7 @@ export function userPlaylists(store) {
 
     if (!isDispatched && session.auth && location.pathname === '/me') {
       isDispatched = true;
-      store.dispatch(UserPlaylistActions.fetch('me'))
+      store.dispatch(PlaylistActions.fetchUser('me'))
     }
   })
 }
