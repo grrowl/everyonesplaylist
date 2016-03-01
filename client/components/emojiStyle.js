@@ -17,7 +17,7 @@ export const transitionStyle = {
 
 export const transitionOptions = {
   transitionEnterTimeout: 1000,
-  transitionLeaveTimeout: 1000,
+  transitionLeaveTimeout: 750,
   transitionName: transitionStyle
 };
 

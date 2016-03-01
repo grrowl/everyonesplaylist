@@ -19,5 +19,9 @@ export default function request(path, method = 'GET') {
         // response here will raw, not json-parsed
     })
     .then(response => response.json())
+    .catch(err => {
+      console.err('API Error:', err.message);
+      throw err;
+    })
 }
 

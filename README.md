@@ -43,7 +43,7 @@ Client: `npm run client` or `webpack --progress --watch`
     playlist starts a related playlist). users' like data helps enable this, as
     well as description tagging, above.
 
-### dumb-level priority
+### lower-level priority
 
 * `client/store.js` supports hot-reloading. add support for starting the HMR
   server (in app.js, when dev)
@@ -55,6 +55,9 @@ Client: `npm run client` or `webpack --progress --watch`
   following it first). so anyone could unpublish any playlist. I guess we can
   just disable unpublish, or have a specific "undo" (i like this)
 
+* cross-browser/OS test, emoji font support is all over the place. shim for
+  images?
+
 ## terms
 
 * "follow playlist": Spotify user follows a playlist to view it a lot.
@@ -62,23 +65,25 @@ Client: `npm run client` or `webpack --progress --watch`
 
 ## directional musings
 
-* what's our aim?: Overall "press butan[s], get music".
-  * get locally published playlists: is only "published" playlists from people
+Overall "press butan[s], get music".
+
+* aim: get locally published playlists: is only "published" playlists from people
     on-site.
+* aim: "Search public playlists"
   * get public spotify playlists: broad! but we can only rely on the title.
-  * "radio-like experience"
-    * spotify radio sucks: it picks a few hot artists from your playlist, picks
-      a few similar artists, and puts their popular songs in the mix. it's not
-      representative of the playlist mood as a whole
-    * if playlist A is a [set^a], and playlist B is a [set^b], and those sets
-      have significant overlap, then it would seem [set^b]'s songs may be
-      similar to the "feel" of [set^a]
-    * kind of a reverse playlist miner
-  * interesting "discovery" or "similarity network" ui? (d3-like?)
-    * prior art <http://www.billdwhite.com/wordpress/2013/12/02/d3-force-layout-with-pan-and-zoom-minimap/>
-    * force graph examples <http://bl.ocks.org/mbostock/1080941> <http://bl.ocks.org/mbostock/1021841>
-    * radar overlay chart <http://bl.ocks.org/nbremer/6506614> (axis could be
-      artists, graph could be playlists)
+* aim: "radio-like experience"
+  * spotify radio sucks: it picks a few hot artists from your playlist, picks
+    a few similar artists, and puts their popular songs in the mix. it's not
+    representative of the playlist mood as a whole
+  * if playlist A is a [set^a], and playlist B is a [set^b], and those sets
+    have significant overlap, then it would seem [set^b]'s songs may be
+    similar to the "feel" of [set^a]
+  * kind of a reverse playlist miner
+* aim: interesting "discovery" or "similarity network" ui? (d3-like?)
+  * prior art <http://www.billdwhite.com/wordpress/2013/12/02/d3-force-layout-with-pan-and-zoom-minimap/>
+  * force graph examples <http://bl.ocks.org/mbostock/1080941> <http://bl.ocks.org/mbostock/1021841>
+  * radar overlay chart <http://bl.ocks.org/nbremer/6506614> (axis could be
+    artists, graph could be playlists)
 
 * social discovery and collaboration
   * how to enable interaction on the same playlist or music "topic"
@@ -86,7 +91,9 @@ Client: `npm run client` or `webpack --progress --watch`
     * sidenote last.fm is dope again and plays songs from the UI! (no "are you
       sure you want to follow links" thing either)
 
-
+* Collaborative playlists exist and are nice but a bit shit to follow and stuff.
+  * maybe it'd be nice to have a "preview" page with a big fat "follow playlist"
+    button
 
 * playlist miner is really nice. it does it's own thing for sure.
 

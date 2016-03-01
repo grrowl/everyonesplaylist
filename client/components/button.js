@@ -7,7 +7,7 @@ import { actionButton } from './emojiStyle.css';
 export default class Button extends Component {
   render() {
     const { href, icon, onClick, children } = this.props,
-          Handler = ( href ? Link : 'a' )
+          Handler = ( href ? Link : 'a' );
 
     return (
       <Handler to={ href } className={ actionButton } onClick={ onClick }>

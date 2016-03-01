@@ -10,6 +10,11 @@
   justify-content: flex-start;
 }
 
+.containerStyle h1, .containerStyle h2, .containerStyle h3, .containerStyle h4,
+.containerStyle h6 {
+  margin: 0;
+}
+
 .contentStyle {
   flex: 1;
   flex-grow: 1;

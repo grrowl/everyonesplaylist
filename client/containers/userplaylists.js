@@ -13,20 +13,59 @@ import Summary from '../components/summary';
 
 export default class UserPlaylists extends Component {
 
-  publishPlaylist(playlist) {
-    let { dispatch } = this.props;
+  constructor() {
+    super();
 
-    dispatch(UserPlaylistActions.publish(playlist.owner.id, playlist.id));
+    this.state = {
+      pendingIds: {}
+    };
+  }
+
+  publishPlaylist(playlist) {
+    let { dispatch } = this.props,
+        { pendingIds } = this.state;
+
+    this.setPlaylistPending(playlist, true);
+
+    var publishAction =
+      dispatch(UserPlaylistActions.publish(playlist.owner.id, playlist.id));
+
+    // ehh it feels dirty to jump through the hoops.
+    // not sure if "return payload.promise from the promise middleware" is
+    // strictly nice.
+    publishAction.payload.promise.then(() =>
+      this.setPlaylistPending(playlist, true));
   }
 
   unpublishPlaylist(playlist) {
-    let { dispatch } = this.props;
+    let { dispatch } = this.props,
+        { pendingIds } = this.state;
 
-    dispatch(UserPlaylistActions.publish(playlist.owner.id, playlist.id));
+    this.setPlaylistPending(playlist, true);
+
+    var unpublishAction =
+      dispatch(UserPlaylistActions.unpublish(playlist.owner.id, playlist.id));
+
+    // see above
+    unpublishAction.payload.promise.then(() =>
+      this.setPlaylistPending(playlist, true));
+  }
+
+  setPlaylistPending(playlist, isPending) {
+    let { pendingIds } = this.state;
+
+    // Mark this playlist's id as pending maybe
+    this.setState({
+      pendingIds: {
+        ...pendingIds,
+        [playlist.id]: isPending
+      }
+    });
   }
 
   renderPlaylists() {
-    let { session, userPlaylists } = this.props
+    let { session, userPlaylists } = this.props,
+        { pendingIds } = this.state;
 
     if (!session.user) {
       return (
@@ -52,12 +91,30 @@ export default class UserPlaylists extends Component {
       );
     }
 
+    /*
     const renderPublishButton = (playlist) => (
             playlists.publishedIds.include(playlist.id)
-            ? <Button>🗣</Button>
+            ? <Button onClick={ this.publishPlaylist.bind(this, playlist) }>
+              🗣</Button>
             : <Button onClick={ this.unpublishPlaylist.bind(this, playlist) }>
               💔</Button>
           );
+    */
+
+    const renderPublishButton = (playlist) => {
+      var { pendingIds } = this.state;
+
+      // If this playlist has a pending action, display a solemn stone head to
+      // indicate they must exercise the patience of gods
+      if (pendingIds[playlist.id])
+        return <Button>🗿</Button>;
+
+      return (
+        <Button href={ `/playlist/${playlist.id}` }>
+          { playlist.id }
+        </Button>
+      );
+    }
 
     return userPlaylists.items.map((playlist, index) =>
       <EmojiStatus emoji={ emojiFor(index) }
@@ -103,6 +160,7 @@ UserPlaylists.propTypes = {};
 function mapStateToProps(state) {
   return {
     session: state.session,
+    playlists: state.playlists,
     userPlaylists: state.userPlaylists
   };
 }

@@ -8,10 +8,18 @@ import CSSTransitionGroup from 'react-addons-css-transition-group';
 import * as SessionActions from '../actions/session';
 
 import EmojiStatus from '../components/emojiStatus';
-import { transitionStyle } from '../components/emojiStyle';
+import { transitionOptions, emojiFor } from '../components/emojiStyle';
 import Button from '../components/button';
 
 export default class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      sessionLinkClicked: false
+    };
+  }
+
   componentDidMount() {
     let { dispatch } = this.props;
 
@@ -19,18 +27,43 @@ export default class App extends Component {
     dispatch(SessionActions.fetch());
   }
 
+  // Hides (with animation) the session link once it's been clicked. If the
+  // browser hasn't navigated away after a little while, put it back cos
+  // something might have gone wrong.
+  onSessionLinkClick() {
+    this.setState({
+      sessionLinkClicked: true
+    })
+
+    setTimeout(() => {
+      this.setState({
+        sessionLinkClicked: false
+      })
+    }, 2000);
+  }
+
   renderSession(session) {
+    let { sessionLinkClicked } = this.state;
+
+    // we're hopefully waiting on the browser to navigate
+    if (sessionLinkClicked)
+      return null;
+
     if (session.authorizeURL) {
       return (
         <EmojiStatus emoji="🤔" key="session.connect">
-          <a href={ session.authorizeURL }>Connect with Spotify plz?</a>
+          <a onClick={ ::this.onSessionLinkClick }
+            href={ session.authorizeURL }>Connect with Spotify plz?</a>
         </EmojiStatus>
       )
     } else if (session.user) {
       let emoji = '🤔',
           addLink = (
             location.pathname.match(/^\/?me$/) === null
-            ? <Link to="/me">add my playlists</Link>
+            ? <Link to="/me">
+                👉
+                playlists
+              </Link>
             : null
           );
 
@@ -87,12 +120,7 @@ export default class App extends Component {
   }
 
   render() {
-    const { session, children, location } = this.props,
-          transitionOptions = {
-            transitionEnterTimeout: 1000,
-            transitionLeaveTimeout: 1000,
-            transitionName: transitionStyle
-          };
+    const { session, children, location } = this.props;
 
     return (
       <div>
@@ -117,9 +145,7 @@ App.propTypes = {};
 
 function mapStateToProps(state) {
   return {
-    session: state.session,
-    playlists: state.playlists,
-    state: state
+    session: state.session
   };
 }
 
