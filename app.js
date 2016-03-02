@@ -13,13 +13,29 @@ import bodyParser from 'body-parser';
 import clientMiddleware from './client/middleware.js'
 import serverMiddleware from './server/middleware.js'
 
-const PORT = process.env['PORT'] || 3000;
+const PORT = process.env['PORT'] || 3000,
+      NODE_ENV = process.env['NODE_ENV'] || 'development';
+
+if (NODE_ENV === 'development') {
+  // development
+  var webpack = require('webpack'),
+      webpackDevMiddleware = require('webpack-dev-middleware'),
+      webpackHotMiddleware = require('webpack-hot-middleware'),
+      webpackConfig = require('./webpack.config');
+}
 
 export default function app() {
   let server = connect();
 
   // gzip/deflate outgoing responses
   server.use(compression());
+
+  // enable hot module reloading
+  if (NODE_ENV === 'development') {
+    let compiler = webpack(webpackConfig);
+    server.use(webpackDevMiddleware(compiler));
+    server.use(webpackHotMiddleware(compiler));
+  }
 
   // store session state server-side
   server.use(session({

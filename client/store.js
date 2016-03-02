@@ -13,12 +13,11 @@ export default function configureStore() {
   }
 
   // Hot reload reducers (requires Webpack HMR to be enabled)
-  // TOOD: enable webpack HMR. :|
-  // if (module.hot) {
-  //   module.hot.accept('./reducers', () =>
-  //     store.replaceReducer(require('./reducers'))
-  //   );
-  // }
+  if (module.hot) {
+    module.hot.accept('./reducers', () =>
+      store.replaceReducer(require('./reducers'))
+    );
+  }
 
   const finalCreateStore = compose(
     applyMiddleware(...middlewares),

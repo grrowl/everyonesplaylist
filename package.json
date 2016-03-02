@@ -4,12 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev-debug": "NODE_ENV=development nodemon --ignore static --exec node --debug index.js",
-    "dev": "NODE_ENV=development nodemon -e 'js css' --ignore static index.js",
-    "server": "NODE_ENV=production node index.js",
+    "dev-debug": "NODE_ENV=development node --debug index.js",
+    "dev": "NODE_ENV=development node index.js",
+    "serve": "NODE_ENV=production node index.js",
     "start": "webpack -p --progress && NODE_ENV=production node index.js",
-    "client": "webpack -p --progress",
-    "client-dev": "webpack -d --watch --progress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tom mckenzie",
@@ -45,6 +43,7 @@
     "babel-cli": "^6.3.17",
     "babel-core": "^6.3.21",
     "babel-loader": "^6.2.2",
+    "babel-plugin-react-transform": "^2.0.0",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.3.16",
     "babel-plugin-transform-runtime": "^6.3.13",
     "babel-plugin-transform-strict-mode": "^6.5.2",
@@ -58,8 +57,11 @@
     "imports-loader": "^0.6.5",
     "json-loader": "^0.5.4",
     "longjohn": "^0.2.11",
+    "react-transform-hmr": "^1.0.2",
     "redux-logger": "^2.5.2",
     "style-loader": "^0.13.0",
-    "webpack": "^1.12.9"
+    "webpack": "^1.12.9",
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.8.1"
   }
 }

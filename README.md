@@ -2,8 +2,10 @@
 
 ## development
 
-Server: `npm run` or `npm run dev`
-Client: `npm run client` or `webpack --progress --watch`
+Developmemt: `npm run dev` - starts server with hot reloading
+Production:
+  * `npm start` - compiles assets and runs server or
+  * `npm run serve` - just runs server
 
 ## to do
 

@@ -4,3 +4,4 @@ static/client.js
 static/client.js.map
 data/
 .sublime-workspace
+webpack.records.json
