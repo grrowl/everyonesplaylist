@@ -13,7 +13,7 @@
 }
 
 .containerStyle h1, .containerStyle h2, .containerStyle h3, .containerStyle h4,
-.containerStyle h6 {
+.containerStyle h6, .containerStyle dl {
   margin: 0;
 }
 

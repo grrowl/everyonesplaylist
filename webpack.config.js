@@ -5,7 +5,8 @@ var webpack = require('webpack'),
 module.exports = {
   entry: './client/app.js',
   output: {
-    filename: './static/client.js'
+    path: path.resolve('./static'),
+    filename: 'client.js'
   },
   module: {
     loaders: [

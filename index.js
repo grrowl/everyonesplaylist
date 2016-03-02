@@ -1,6 +1,4 @@
-require("babel-register")({
-  presets: ['es2015', 'stage-0']
-});
+require("babel-register")();
 require("babel-polyfill");
 require("css-modules-require-hook");
 
